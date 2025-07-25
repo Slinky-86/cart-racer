@@ -31,6 +31,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
 	void SetWeaponType(EWeaponType NewWeaponType) { WeaponType = NewWeaponType; }
 
+	UFUNCTION(BlueprintPure, Category = "Projectile")
+	float GetDamage() const { return Damage; }
+
+	UFUNCTION(BlueprintPure, Category = "Projectile")
+	bool HasExploded() const { return bHasExploded; }
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* CollisionComponent;
@@ -41,6 +47,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UProjectileMovementComponent* ProjectileMovement;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UNiagaraComponent* TrailEffect;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float Damage = 25.0f;
 
@@ -48,12 +57,25 @@ protected:
 	float LifeSpan = 5.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	float Speed = 1200.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	EWeaponType WeaponType = EWeaponType::MachineGun;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	TSubclassOf<class AActor> ExplosionEffect;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	class UNiagaraSystem* ImpactEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	class USoundBase* ImpactSound;
+
 private:
+	bool bHasExploded = false;
+	
 	void ApplyDamageToTarget(AActor* Target);
 	void CreateExplosion();
+	virtual void OnImpact(const FHitResult& HitResult);
+	virtual void Explode();
 };

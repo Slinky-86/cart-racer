@@ -4,8 +4,11 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 #include "Engine/Engine.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundBase.h"
 
 AWRProjectile::AWRProjectile()
 {
@@ -24,10 +27,14 @@ AWRProjectile::AWRProjectile()
 	ProjectileMesh->SetupAttachment(RootComponent);
 	ProjectileMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	// Create trail effect component
+	TrailEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("TrailEffect"));
+	TrailEffect->SetupAttachment(RootComponent);
+
 	// Create projectile movement component
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed = 2000.0f;
-	ProjectileMovement->MaxSpeed = 2000.0f;
+	ProjectileMovement->InitialSpeed = Speed;
+	ProjectileMovement->MaxSpeed = Speed;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = false;
 	ProjectileMovement->Bounciness = 0.0f;
@@ -50,6 +57,7 @@ void AWRProjectile::BeginPlay()
 		case EWeaponType::MachineGun:
 			ProjectileMovement->InitialSpeed = 2500.0f;
 			ProjectileMovement->MaxSpeed = 2500.0f;
+			ProjectileMovement->ProjectileGravityScale = 0.1f;
 			break;
 		case EWeaponType::RocketLauncher:
 			ProjectileMovement->InitialSpeed = 1500.0f;
@@ -68,6 +76,8 @@ void AWRProjectile::BeginPlay()
 			InitialLifeSpan = 1.0f; // Short range
 			break;
 	}
+
+	UE_LOG(LogWastelandRacers, Log, TEXT("Projectile spawned with weapon type: %d"), (int32)WeaponType);
 }
 
 void AWRProjectile::Tick(float DeltaTime)
@@ -77,10 +87,13 @@ void AWRProjectile::Tick(float DeltaTime)
 
 void AWRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	// Don't hit the owner
-	if (OtherActor && OtherActor != GetOwner() && OtherActor != this)
+	// Don't hit the owner or self
+	if (OtherActor && OtherActor != GetOwner() && OtherActor != this && !bHasExploded)
 	{
 		UE_LOG(LogWastelandRacers, Log, TEXT("Projectile hit: %s"), *OtherActor->GetName());
+		
+		// Call impact handling
+		OnImpact(Hit);
 		
 		// Apply damage if it's a kart
 		ApplyDamageToTarget(OtherActor);
@@ -91,9 +104,55 @@ void AWRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 			CreateExplosion();
 		}
 		
-		// Destroy the projectile
-		Destroy();
+		// Play impact sound
+		if (ImpactSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
+		}
+		
+		// Spawn impact effect
+		if (ImpactEffect)
+		{
+			UGameplayStatics::SpawnSystemAtLocation(GetWorld(), ImpactEffect, GetActorLocation(), GetActorRotation());
+		}
+		
+		// Mark as exploded and destroy
+		Explode();
 	}
+}
+
+void AWRProjectile::OnImpact(const FHitResult& HitResult)
+{
+	// Override in derived classes for specific impact behavior
+	UE_LOG(LogWastelandRacers, Log, TEXT("Projectile impact at: %s"), *HitResult.Location.ToString());
+}
+
+void AWRProjectile::Explode()
+{
+	if (bHasExploded)
+	{
+		return;
+	}
+	
+	bHasExploded = true;
+	
+	// Disable collision
+	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	// Stop movement
+	ProjectileMovement->StopMovementImmediately();
+	
+	// Hide mesh
+	ProjectileMesh->SetVisibility(false);
+	
+	// Stop trail effect
+	if (TrailEffect)
+	{
+		TrailEffect->Deactivate();
+	}
+	
+	// Destroy after a short delay to allow effects to play
+	SetLifeSpan(0.5f);
 }
 
 void AWRProjectile::ApplyDamageToTarget(AActor* Target)
@@ -108,7 +167,7 @@ void AWRProjectile::ApplyDamageToTarget(AActor* Target)
 	if (TargetKart)
 	{
 		TargetKart->TakeDamage(Damage);
-		UE_LOG(LogWastelandRacers, Log, TEXT("Applied %.1f damage to kart"), Damage);
+		UE_LOG(LogWastelandRacers, Log, TEXT("Applied %.1f damage to kart: %s"), Damage, *TargetKart->GetName());
 	}
 	else
 	{
@@ -122,6 +181,8 @@ void AWRProjectile::ApplyDamageToTarget(AActor* Target)
 			this,
 			UDamageType::StaticClass()
 		);
+		
+		UE_LOG(LogWastelandRacers, Log, TEXT("Applied %.1f generic damage to: %s"), Damage, *Target->GetName());
 	}
 }
 
@@ -159,6 +220,6 @@ void AWRProjectile::CreateExplosion()
 			true // Full damage at center
 		);
 		
-		UE_LOG(LogWastelandRacers, Log, TEXT("Created explosion at location: %s"), *GetActorLocation().ToString());
+		UE_LOG(LogWastelandRacers, Log, TEXT("Created explosion at location: %s with radius damage"), *GetActorLocation().ToString());
 	}
 }
