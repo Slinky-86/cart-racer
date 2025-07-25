@@ -1,5 +1,5 @@
 #include "WRGameInstance.h"
-#include "WastelandRacers.h"
+#include "WastelandRacers/WastelandRacers.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
 #include "WastelandRacers/Shop/WRProShop.h"
@@ -125,6 +125,7 @@ void UWRGameInstance::CloseProShop()
 	CurrentGameMode = EGameMode::FreeRoam;
 	// Return to previous world
 }
+
 void UWRGameInstance::CreateSession(int32 MaxPlayers)
 {
 	if (SessionInterface.IsValid())
@@ -194,7 +195,7 @@ void UWRGameInstance::OnCreateSessionComplete(FName SessionName, bool bWasSucces
 		SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
 	}
 
-	OnCreateSessionComplete.Broadcast(bWasSuccessful);
+	// OnCreateSessionComplete.Broadcast(bWasSuccessful);
 }
 
 void UWRGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
@@ -204,7 +205,7 @@ void UWRGameInstance::OnFindSessionsComplete(bool bWasSuccessful)
 		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionsCompleteDelegateHandle);
 	}
 
-	OnFindSessionsComplete.Broadcast(bWasSuccessful);
+	// OnFindSessionsComplete.Broadcast(bWasSuccessful);
 }
 
 void UWRGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
@@ -224,5 +225,5 @@ void UWRGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCom
 		}
 	}
 
-	OnJoinSessionComplete.Broadcast(Result == EOnJoinSessionCompleteResult::Success);
+	// OnJoinSessionComplete.Broadcast(Result == EOnJoinSessionCompleteResult::Success);
 }

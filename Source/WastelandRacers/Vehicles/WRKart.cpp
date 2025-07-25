@@ -1,257 +1,177 @@
 #include "WRKart.h"
-#include "WastelandRacers/Weapons/WRWeaponComponent.h"
-#include "WastelandRacers/Gameplay/WRPowerUpComponent.h"
-#include "WastelandRacers/Gameplay/WRGameInstance.h"
 #include "Components/StaticMeshComponent.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "NiagaraComponent.h"
-#include "NiagaraFunctionLibrary.h"
-#include "ChaosVehicleMovementComponent.h"
+#include "Components/AudioComponent.h"
+#include "WastelandRacers/Weapons/WRWeaponComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/InputComponent.h"
 #include "Engine/Engine.h"
-#include "Engine/World.h"
-#include "GameFramework/Pawn.h"
 
 AWRKart::AWRKart()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Create kart mesh component
+	KartMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KartMesh"));
+	RootComponent = KartMesh;
+
+	// Create engine audio component
+	EngineAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("EngineAudio"));
+	EngineAudioComponent->SetupAttachment(RootComponent);
+
 	// Create weapon component
 	WeaponComponent = CreateDefaultSubobject<UWRWeaponComponent>(TEXT("WeaponComponent"));
 
-	// Create power-up component
-	PowerUpComponent = CreateDefaultSubobject<UWRPowerUpComponent>(TEXT("PowerUpComponent"));
-
-	// Create Niagara effects
-	BoostEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("BoostEffect"));
-	BoostEffect->SetupAttachment(RootComponent);
-	BoostEffect->SetAutoActivate(false);
-
-	DriftEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("DriftEffect"));
-	DriftEffect->SetupAttachment(RootComponent);
-	DriftEffect->SetAutoActivate(false);
-
-	// Set collision
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_Vehicle);
-	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-
-	// Bind hit event
-	GetMesh()->OnComponentHit.AddDynamic(this, &AWRKart::OnHit);
+	// Initialize values
+	CurrentBoostEnergy = MaxBoostEnergy;
+	CurrentHealth = MaxHealth;
 }
 
 void AWRKart::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// Sync EngineClass from GameInstance if not set
-	if (EngineClass == EEngineClass::EC_100cc)
-	{
-		if (const UWorld* World = GetWorld())
-		{
-			if (const UGameInstance* GameInstance = World->GetGameInstance())
-			{
-				if (const UWRGameInstance* WRGI = Cast<UWRGameInstance>(GameInstance))
-				{
-					EngineClass = WRGI->CurrentEngineClass;
-				}
-			}
-		}
-	}
-	ApplyKartStats();
+	
+	UE_LOG(LogWastelandRacers, Log, TEXT("WRKart BeginPlay - Health: %.1f, Boost: %.1f"), CurrentHealth, CurrentBoostEnergy);
 }
 
 void AWRKart::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UpdateDrift(DeltaTime);
-	UpdateBoost(DeltaTime);
+	// Handle boost
+	if (bIsBoosting && CurrentBoostEnergy > 0.0f)
+	{
+		UseBoost(DeltaTime);
+	}
+	else
+	{
+		RechargeBoost(DeltaTime);
+	}
+
+	// Update engine audio based on throttle
+	if (EngineAudioComponent && EngineAudioComponent->GetSound())
+	{
+		float PitchMultiplier = 1.0f + (FMath::Abs(ThrottleInput) * 0.5f);
+		EngineAudioComponent->SetPitchMultiplier(PitchMultiplier);
+	}
 }
 
 void AWRKart::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	// Bind movement
+	PlayerInputComponent->BindAxis("MoveForward", this, &AWRKart::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AWRKart::MoveRight);
+
+	// Bind actions
+	PlayerInputComponent->BindAction("Handbrake", IE_Pressed, this, &AWRKart::OnHandbrakePressed);
+	PlayerInputComponent->BindAction("Handbrake", IE_Released, this, &AWRKart::OnHandbrakeReleased);
+	PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &AWRKart::OnBoostPressed);
+	PlayerInputComponent->BindAction("FireWeapon", IE_Pressed, this, &AWRKart::OnFireWeapon);
 }
 
-void AWRKart::SetThrottleInput(float Value)
+void AWRKart::MoveForward(float Value)
 {
-	CurrentThrottle = Value;
+	ThrottleInput = Value;
 	
-	if (UChaosVehicleMovementComponent* VehicleMovement = Cast<UChaosVehicleMovementComponent>(GetVehicleMovementComponent()))
+	if (IsDestroyed())
 	{
-		VehicleMovement->SetThrottleInput(Value);
+		return;
+	}
+
+	// Apply boost multiplier if boosting
+	float FinalValue = Value;
+	if (bIsBoosting && CurrentBoostEnergy > 0.0f)
+	{
+		FinalValue *= BoostMultiplier;
+	}
+
+	// Apply throttle to vehicle
+	GetVehicleMovementComponent()->SetThrottleInput(FinalValue);
+}
+
+void AWRKart::MoveRight(float Value)
+{
+	SteeringInput = Value;
+	
+	if (IsDestroyed())
+	{
+		return;
+	}
+
+	// Apply steering to vehicle
+	GetVehicleMovementComponent()->SetSteeringInput(Value);
+}
+
+void AWRKart::OnHandbrakePressed()
+{
+	bIsHandbrakePressed = true;
+	GetVehicleMovementComponent()->SetHandbrakeInput(true);
+}
+
+void AWRKart::OnHandbrakeReleased()
+{
+	bIsHandbrakePressed = false;
+	GetVehicleMovementComponent()->SetHandbrakeInput(false);
+}
+
+void AWRKart::OnBoostPressed()
+{
+	if (CurrentBoostEnergy > 0.0f && !IsDestroyed())
+	{
+		bIsBoosting = !bIsBoosting;
+		UE_LOG(LogWastelandRacers, Log, TEXT("Boost toggled: %s"), bIsBoosting ? TEXT("ON") : TEXT("OFF"));
 	}
 }
 
-void AWRKart::SetSteeringInput(float Value)
+void AWRKart::OnFireWeapon()
 {
-	CurrentSteering = Value;
-	
-	if (UChaosVehicleMovementComponent* VehicleMovement = Cast<UChaosVehicleMovementComponent>(GetVehicleMovementComponent()))
-	{
-		VehicleMovement->SetSteeringInput(Value);
-	}
-}
-
-void AWRKart::SetBrakeInput(float Value)
-{
-	CurrentBrake = Value;
-	
-	if (UChaosVehicleMovementComponent* VehicleMovement = Cast<UChaosVehicleMovementComponent>(GetVehicleMovementComponent()))
-	{
-		VehicleMovement->SetBrakeInput(Value);
-	}
-}
-
-void AWRKart::UseWeapon()
-{
-	if (WeaponComponent)
+	if (WeaponComponent && !IsDestroyed())
 	{
 		WeaponComponent->FireWeapon();
 	}
 }
 
-void AWRKart::StartDrift()
+void AWRKart::UseBoost(float DeltaTime)
 {
-	if (!bIsDrifting && FMath::Abs(CurrentSteering) > DriftThreshold)
+	if (CurrentBoostEnergy > 0.0f)
 	{
-		bIsDrifting = true;
-		DriftTime = 0.0f;
+		CurrentBoostEnergy = FMath::Max(0.0f, CurrentBoostEnergy - (BoostConsumptionRate * DeltaTime));
 		
-		if (DriftEffect)
-		{
-			DriftEffect->Activate();
-		}
-	}
-}
-
-void AWRKart::StopDrift()
-{
-	if (bIsDrifting)
-	{
-		bIsDrifting = false;
-		ApplyDriftBoost();
-		
-		if (DriftEffect)
-		{
-			DriftEffect->Deactivate();
-		}
-	}
-}
-
-void AWRKart::ActivateBoost(float BoostAmount)
-{
-	bIsBoosting = true;
-	BoostTimeRemaining = BoostAmount;
-	
-	if (BoostEffect)
-	{
-		BoostEffect->Activate();
-	}
-}
-
-float AWRKart::GetCurrentSpeed() const
-{
-	if (UChaosVehicleMovementComponent* VehicleMovement = Cast<UChaosVehicleMovementComponent>(GetVehicleMovementComponent()))
-	{
-		return VehicleMovement->GetForwardSpeed();
-	}
-	return 0.0f;
-}
-
-void AWRKart::UpdateDrift(float DeltaTime)
-{
-	if (bIsDrifting)
-	{
-		DriftTime += DeltaTime;
-		
-		// Visual feedback for drift levels
-		if (DriftTime >= UltraMiniTurboTime)
-		{
-			// Ultra boost ready - purple sparks
-		}
-		else if (DriftTime >= SuperMiniTurboTime)
-		{
-			// Super boost ready - orange sparks
-		}
-		else if (DriftTime >= MiniTurboTime)
-		{
-			// Mini boost ready - blue sparks
-		}
-	}
-}
-
-void AWRKart::ApplyDriftBoost()
-{
-	float BoostPower = 0.0f;
-	
-	if (DriftTime >= UltraMiniTurboTime)
-	{
-		BoostPower = 2.0f; // Ultra boost
-	}
-	else if (DriftTime >= SuperMiniTurboTime)
-	{
-		BoostPower = 1.5f; // Super boost
-	}
-	else if (DriftTime >= MiniTurboTime)
-	{
-		BoostPower = 1.0f; // Mini boost
-	}
-	
-	if (BoostPower > 0.0f)
-	{
-		ActivateBoost(BoostPower);
-	}
-	
-	DriftTime = 0.0f;
-}
-
-void AWRKart::UpdateBoost(float DeltaTime)
-{
-	if (bIsBoosting)
-	{
-		BoostTimeRemaining -= DeltaTime;
-		// (Removed AddForce; boost logic can be implemented via increasing throttle or modifying acceleration.)
-		if (BoostTimeRemaining <= 0.0f)
+		if (CurrentBoostEnergy <= 0.0f)
 		{
 			bIsBoosting = false;
-			if (BoostEffect)
-			{
-				BoostEffect->Deactivate();
-			}
+			UE_LOG(LogWastelandRacers, Log, TEXT("Boost depleted"));
 		}
 	}
 }
 
-void AWRKart::ApplyKartStats()
+void AWRKart::RechargeBoost(float DeltaTime)
 {
-	if (UChaosVehicleMovementComponent* VehicleMovement = Cast<UChaosVehicleMovementComponent>(GetVehicleMovementComponent()))
+	if (CurrentBoostEnergy < MaxBoostEnergy && !bIsBoosting)
 	{
-		const float Mult = GetEngineClassMultiplier(EngineClass);
-
-		// ChaosVehicleMovementComponent does not expose EngineSetup in UE 5.6
-		// Tuning for engine class multiplier goes here if API is exposed in future
-
-		// Adjust mass
-		GetMesh()->SetMassOverrideInKg(NAME_None, KartStats.Weight, true);
-
-		// Optionally scale acceleration and boost power
-		// (This scales only boost power, as requested)
-		KartStats.BoostPower = KartStats.BoostPower * Mult;
+		CurrentBoostEnergy = FMath::Min(MaxBoostEnergy, CurrentBoostEnergy + (BoostRechargeRate * DeltaTime));
 	}
 }
 
-void AWRKart::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AWRKart::TakeDamage(float DamageAmount)
 {
-	// Handle collisions with other karts, walls, etc.
-	if (AWRKart* OtherKart = Cast<AWRKart>(OtherActor))
+	CurrentHealth = FMath::Max(0.0f, CurrentHealth - DamageAmount);
+	
+	UE_LOG(LogWastelandRacers, Log, TEXT("Kart took %.1f damage, health now: %.1f"), DamageAmount, CurrentHealth);
+	
+	if (IsDestroyed())
 	{
-		// Kart-to-kart collision logic
-		float ImpactForce = NormalImpulse.Size();
-		if (ImpactForce > 1000.0f)
-		{
-			// Apply spin-out or slowdown effect
-		}
+		UE_LOG(LogWastelandRacers, Warning, TEXT("Kart destroyed!"));
+		// Handle kart destruction
+		GetVehicleMovementComponent()->SetThrottleInput(0.0f);
+		GetVehicleMovementComponent()->SetSteeringInput(0.0f);
 	}
+}
+
+void AWRKart::RepairKart(float RepairAmount)
+{
+	CurrentHealth = FMath::Min(MaxHealth, CurrentHealth + RepairAmount);
+	UE_LOG(LogWastelandRacers, Log, TEXT("Kart repaired by %.1f, health now: %.1f"), RepairAmount, CurrentHealth);
 }

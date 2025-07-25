@@ -2,151 +2,94 @@
 
 #include "CoreMinimal.h"
 #include "ChaosVehicleWheel.h"
-#include "WheeledVehiclePawn.h"
-#include "WastelandRacers/Weapons/WRWeaponComponent.h"
-#include "WastelandRacers/Gameplay/WRPowerUpComponent.h"
-#include "WastelandRacers/Core/WREngineClass.h"
+#include "ChaosWheeledVehiclePawn.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/AudioComponent.h"
+#include "Engine/Engine.h"
+#include "WastelandRacers/WastelandRacers.h"
 #include "WRKart.generated.h"
 
-UENUM(BlueprintType)
-enum class EKartType : uint8
-{
-	Balanced,
-	Speed,
-	Acceleration,
-	Handling,
-	Heavy
-};
-
-USTRUCT(BlueprintType)
-struct FKartStats
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MaxSpeed = 1200.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Acceleration = 800.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Handling = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Weight = 1500.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BoostPower = 2000.0f;
-};
-
 UCLASS()
-class WASTELANDRACERS_API AWRKart : public AWheeledVehiclePawn
+class WASTELANDRACERS_API AWRKart : public AChaosWheeledVehiclePawn
 {
 	GENERATED_BODY()
 
 public:
 	AWRKart();
 
+protected:
 	virtual void BeginPlay() override;
+
+public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	// Input functions
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void SetThrottleInput(float Value);
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void OnHandbrakePressed();
+	void OnHandbrakeReleased();
+	void OnBoostPressed();
+	void OnFireWeapon();
 
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void SetSteeringInput(float Value);
+	// Kart properties
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UStaticMeshComponent* KartMesh;
 
-	UFUNCTION(BlueprintCallable, Category = "Input")
-	void SetBrakeInput(float Value);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UAudioComponent* EngineAudioComponent;
 
-	UFUNCTION(BlueprintCallable, Category = "Weapons")
-	void UseWeapon();
-
-	UFUNCTION(BlueprintCallable, Category = "Drift")
-	void StartDrift();
-
-	UFUNCTION(BlueprintCallable, Category = "Drift")
-	void StopDrift();
-
-	UFUNCTION(BlueprintCallable, Category = "Boost")
-	void ActivateBoost(float BoostAmount);
-
-	// Getters
-	UFUNCTION(BlueprintPure, Category = "Stats")
-	float GetCurrentSpeed() const;
-
-	UFUNCTION(BlueprintPure, Category = "Stats")
-	bool IsDrifting() const { return bIsDrifting; }
-
-	UFUNCTION(BlueprintPure, Category = "Stats")
-	float GetDriftTime() const { return DriftTime; }
-
-	UFUNCTION(BlueprintPure, Category = "Stats")
-	int32 GetCurrentLap() const { return CurrentLap; }
-
-	UFUNCTION(BlueprintPure, Category = "Stats")
-	int32 GetPosition() const { return RacePosition; }
-
-protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UWRWeaponComponent* WeaponComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	class UWRPowerUpComponent* PowerUpComponent;
+	// Boost system
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boost")
+	float MaxBoostEnergy = 100.0f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	class UNiagaraComponent* BoostEffect;
+	UPROPERTY(BlueprintReadOnly, Category = "Boost")
+	float CurrentBoostEnergy = 100.0f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	class UNiagaraComponent* DriftEffect;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boost")
+	float BoostConsumptionRate = 25.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Kart")
-	EKartType KartType = EKartType::Balanced;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boost")
+	float BoostRechargeRate = 10.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Kart")
-	FKartStats KartStats;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boost")
+	float BoostMultiplier = 1.5f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Engine")
-	EEngineClass EngineClass = EEngineClass::EC_100cc;
+	// Health system
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float MaxHealth = 100.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drift")
-	float DriftThreshold = 0.7f;
+	UPROPERTY(BlueprintReadOnly, Category = "Health")
+	float CurrentHealth = 100.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drift")
-	float MiniTurboTime = 1.0f;
+	// Functions
+	UFUNCTION(BlueprintCallable, Category = "Boost")
+	void UseBoost(float DeltaTime);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drift")
-	float SuperMiniTurboTime = 2.5f;
+	UFUNCTION(BlueprintCallable, Category = "Boost")
+	void RechargeBoost(float DeltaTime);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drift")
-	float UltraMiniTurboTime = 4.0f;
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void TakeDamage(float DamageAmount);
 
-public:
-	bool IsBoosting() const { return bIsBoosting; }
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void RepairKart(float RepairAmount);
+
+	UFUNCTION(BlueprintPure, Category = "Status")
+	bool IsDestroyed() const { return CurrentHealth <= 0.0f; }
+
+	UFUNCTION(BlueprintPure, Category = "Status")
+	float GetHealthPercentage() const { return CurrentHealth / MaxHealth; }
+
+	UFUNCTION(BlueprintPure, Category = "Status")
+	float GetBoostPercentage() const { return CurrentBoostEnergy / MaxBoostEnergy; }
 
 private:
-	bool bIsDrifting = false;
-	float DriftTime = 0.0f;
-	float CurrentThrottle = 0.0f;
-	float CurrentSteering = 0.0f;
-	float CurrentBrake = 0.0f;
-
-	// Race tracking
-	int32 CurrentLap = 1;
-	int32 RacePosition = 1;
-	int32 CheckpointsPassed = 0;
-
-	// Boost system
 	bool bIsBoosting = false;
-	float BoostTimeRemaining = 0.0f;
-
-	void UpdateDrift(float DeltaTime);
-	void ApplyDriftBoost();
-	void UpdateBoost(float DeltaTime);
-	void ApplyKartStats();
-
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	bool bIsHandbrakePressed = false;
+	float ThrottleInput = 0.0f;
+	float SteeringInput = 0.0f;
 };

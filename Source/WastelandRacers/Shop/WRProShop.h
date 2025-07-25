@@ -1,49 +1,70 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "WastelandRacers/Core/WREngineClass.h"
+#include "Engine/DataAsset.h"
 #include "WRProShop.generated.h"
 
-UCLASS(BlueprintType)
-class WASTELANDRACERS_API UWRProShop : public UObject
+USTRUCT(BlueprintType)
+struct FVehicleData
 {
 	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, Category = "Vehicle")
+	FString VehicleName;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Vehicle")
+	int32 Price;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Vehicle")
+	bool bIsUnlocked;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Vehicle")
+	float Speed;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Vehicle")
+	float Acceleration;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Vehicle")
+	float Handling;
+
+	FVehicleData()
+	{
+		VehicleName = TEXT("Default Kart");
+		Price = 0;
+		bIsUnlocked = true;
+		Speed = 100.0f;
+		Acceleration = 100.0f;
+		Handling = 100.0f;
+	}
+};
+
+UCLASS(BlueprintType)
+class WASTELANDRACERS_API UWRProShop : public UDataAsset
+{
+	GENERATED_BODY()
+
 public:
 	UWRProShop();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProShop")
-	TSoftObjectPtr<UWorld> ShowroomLevel;
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	bool EnterDealership(class UWRGameInstance* GameInstance);
 
-	UPROPERTY(BlueprintReadWrite, Category = "ProShop")
-	int32 RacePoints = 0;
-
-	UPROPERTY(BlueprintReadWrite, Category = "ProShop")
-	TSet<EEngineClass> UnlockedEngineClasses;
-
-	UPROPERTY(BlueprintReadWrite, Category = "ProShop")
-	TSet<FName> OwnedUpgradeIds;
-
-	// Persistence
+	UFUNCTION(BlueprintCallable, Category = "Shop")
 	void LoadPlayerProgress();
-	void SavePlayerProgress() const;
 
-	// Upgrade logic
-	bool PurchaseUpgrade(FName UpgradeId, int32 Cost);
-	bool IsUpgradeOwned(FName UpgradeId) const;
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	bool PurchaseVehicle(int32 VehicleIndex);
 
-	// Cosmetic application
-	void ApplyPaintUpgrade(class AWRKart* Kart, UMaterialInterface* PaintMat);
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	TArray<FVehicleData> GetAvailableVehicles() const { return AvailableVehicles; }
 
-	UFUNCTION(BlueprintCallable, Category = "ProShop")
-	void AddRacePoints(int32 Points);
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	int32 GetPlayerCurrency() const { return PlayerCurrency; }
 
-	UFUNCTION(BlueprintCallable, Category = "ProShop")
-	bool PurchaseEngineClass(EEngineClass ClassToBuy, int32 Cost);
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "Shop")
+	TArray<FVehicleData> AvailableVehicles;
 
-	UFUNCTION(BlueprintPure, Category = "ProShop")
-	bool IsEngineClassUnlocked(EEngineClass Class) const;
-
-public:
-	bool EnterDealership(const UObject* WorldContext);
+	UPROPERTY(BlueprintReadOnly, Category = "Shop")
+	int32 PlayerCurrency;
 };

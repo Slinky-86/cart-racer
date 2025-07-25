@@ -1,239 +1,237 @@
 #include "WRWeaponComponent.h"
 #include "WastelandRacers/WastelandRacers.h"
-#include "WastelandRacers/Vehicles/WRKart.h"
-#include "WastelandRacers/Weapons/Projectiles/WRProjectile.h"
-#include "WastelandRacers/Weapons/Projectiles/WRHomingRocket.h"
-#include "WastelandRacers/Weapons/Projectiles/WRGrenade.h"
+#include "WastelandRacers/Weapons/WRProjectile.h"
 #include "Engine/World.h"
-#include "EngineUtils.h"
-#include "Engine/Engine.h"
-#include "Components/SceneComponent.h"
-#include "TimerManager.h"
+#include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UWRWeaponComponent::UWRWeaponComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	CurrentAmmo = MaxAmmo;
 }
 
 void UWRWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// Create weapon mount point if not set
-	if (!WeaponMountPoint)
-	{
-		WeaponMountPoint = NewObject<USceneComponent>(GetOwner());
-		WeaponMountPoint->SetupAttachment(GetOwner()->GetRootComponent());
-	}
+	CurrentAmmo = MaxAmmo;
 }
 
 void UWRWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
 
-void UWRWeaponComponent::FireWeapon()
-{
-	if (CurrentWeapon == EWeaponType::None)
-		return;
-
-	float CurrentTime = GetWorld()->GetTimeSeconds();
-	if (CurrentTime - LastFireTime < FireCooldown)
-		return;
-
-	LastFireTime = CurrentTime;
-
-	switch (CurrentWeapon)
+	// Handle reloading
+	if (bIsReloading)
 	{
-		case EWeaponType::HomingRocket:
-			FireHomingRocket();
-			break;
-		case EWeaponType::ShotgunBlast:
-			FireShotgunBlast();
-			break;
-		case EWeaponType::OilSlick:
-			DeployOilSlick();
-			break;
-		case EWeaponType::Grenade:
-			ThrowGrenade();
-			break;
-		case EWeaponType::SlagDebuff:
-			ApplySlagDebuff();
-			break;
-		case EWeaponType::Shield:
-			ActivateShield();
-			break;
-		case EWeaponType::SpeedBoost:
-			ActivateSpeedBoost();
-			break;
-		case EWeaponType::TeleportPad:
-			UseTeleportPad();
-			break;
-		case EWeaponType::Decoy:
-			DeployDecoy();
-			break;
-	}
-
-	// Clear weapon after use
-	CurrentWeapon = EWeaponType::None;
-}
-
-void UWRWeaponComponent::SetCurrentWeapon(EWeaponType NewWeaponType)
-{
-	CurrentWeapon = NewWeaponType;
-}
-
-void UWRWeaponComponent::AddWeapon(EWeaponType WeaponType)
-{
-	if (CurrentWeapon == EWeaponType::None)
-	{
-		CurrentWeapon = WeaponType;
-	}
-}
-
-void UWRWeaponComponent::FireHomingRocket()
-{
-	if (ProjectileClasses.Num() > 0 && ProjectileClasses[0])
-	{
-		FVector SpawnLocation = WeaponMountPoint->GetComponentLocation();
-		FRotator SpawnRotation = GetOwner()->GetActorRotation();
-
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.Owner = GetOwner();
-		SpawnParams.Instigator = Cast<APawn>(GetOwner());
-
-		AWRHomingRocket* Rocket = GetWorld()->SpawnActor<AWRHomingRocket>(
-			AWRHomingRocket::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
-
-		if (Rocket)
+		float CurrentTime = GetWorld()->GetTimeSeconds();
+		if (CurrentTime - ReloadStartTime >= ReloadTime)
 		{
-			Rocket->SetTarget(FindNearestTarget());
+			CurrentAmmo = MaxAmmo;
+			bIsReloading = false;
+			UE_LOG(LogWastelandRacers, Log, TEXT("Weapon reloaded"));
 		}
 	}
 }
 
-void UWRWeaponComponent::FireShotgunBlast()
+void UWRWeaponComponent::FireWeapon()
 {
-	// Fire multiple projectiles in a spread pattern
-	int32 PelletCount = 5;
-	float SpreadAngle = 30.0f;
-
-	for (int32 i = 0; i < PelletCount; i++)
+	if (!CanFire())
 	{
-		FVector SpawnLocation = WeaponMountPoint->GetComponentLocation();
-		FRotator SpawnRotation = GetOwner()->GetActorRotation();
-		
-		// Add spread
-		float AngleOffset = (i - PelletCount / 2) * (SpreadAngle / PelletCount);
-		SpawnRotation.Yaw += AngleOffset;
+		return;
+	}
 
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.Owner = GetOwner();
-		SpawnParams.Instigator = Cast<APawn>(GetOwner());
+	LastFireTime = GetWorld()->GetTimeSeconds();
 
-		GetWorld()->SpawnActor<AWRProjectile>(
-			AWRProjectile::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
+	switch (CurrentWeaponType)
+	{
+		case EWeaponType::MachineGun:
+			FireMachineGun();
+			break;
+		case EWeaponType::RocketLauncher:
+			FireRocketLauncher();
+			break;
+		case EWeaponType::Shotgun:
+			FireShotgun();
+			break;
+		case EWeaponType::Flamethrower:
+			FireFlamethrower();
+			break;
+	}
+
+	CurrentAmmo--;
+	
+	if (CurrentAmmo <= 0)
+	{
+		ReloadWeapon();
 	}
 }
 
-void UWRWeaponComponent::DeployOilSlick()
+void UWRWeaponComponent::SetWeaponType(EWeaponType NewWeaponType)
 {
-	// Spawn oil slick behind the kart
-	FVector SpawnLocation = GetOwner()->GetActorLocation() - (GetOwner()->GetActorForwardVector() * 200.0f);
-	FRotator SpawnRotation = GetOwner()->GetActorRotation();
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = GetOwner();
-
-	// Spawn oil slick actor (to be implemented)
-	// GetWorld()->SpawnActor<AWROilSlick>(AWROilSlick::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
+	CurrentWeaponType = NewWeaponType;
+	
+	// Adjust weapon stats based on type
+	switch (NewWeaponType)
+	{
+		case EWeaponType::MachineGun:
+			MaxAmmo = 30;
+			FireRate = 0.1f;
+			WeaponDamage = 25.0f;
+			ReloadTime = 2.0f;
+			break;
+		case EWeaponType::RocketLauncher:
+			MaxAmmo = 5;
+			FireRate = 1.0f;
+			WeaponDamage = 100.0f;
+			ReloadTime = 3.0f;
+			break;
+		case EWeaponType::Shotgun:
+			MaxAmmo = 8;
+			FireRate = 0.8f;
+			WeaponDamage = 75.0f;
+			ReloadTime = 2.5f;
+			break;
+		case EWeaponType::Flamethrower:
+			MaxAmmo = 50;
+			FireRate = 0.05f;
+			WeaponDamage = 15.0f;
+			ReloadTime = 4.0f;
+			break;
+	}
+	
+	CurrentAmmo = MaxAmmo;
+	UE_LOG(LogWastelandRacers, Log, TEXT("Weapon type changed to: %d"), (int32)NewWeaponType);
 }
 
-void UWRWeaponComponent::ThrowGrenade()
+void UWRWeaponComponent::ReloadWeapon()
 {
-	FVector SpawnLocation = WeaponMountPoint->GetComponentLocation();
-	FRotator SpawnRotation = GetOwner()->GetActorRotation();
-	SpawnRotation.Pitch += 15.0f; // Arc the grenade
+	if (!bIsReloading && CurrentAmmo < MaxAmmo)
+	{
+		bIsReloading = true;
+		ReloadStartTime = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogWastelandRacers, Log, TEXT("Reloading weapon..."));
+	}
+}
+
+bool UWRWeaponComponent::CanFire() const
+{
+	if (bIsReloading || CurrentAmmo <= 0)
+	{
+		return false;
+	}
+
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+	return (CurrentTime - LastFireTime) >= FireRate;
+}
+
+void UWRWeaponComponent::FireMachineGun()
+{
+	FVector StartLocation = GetMuzzleLocation();
+	FVector Direction = GetFireDirection();
+	
+	SpawnProjectile(StartLocation, Direction);
+	UE_LOG(LogWastelandRacers, Log, TEXT("Fired machine gun"));
+}
+
+void UWRWeaponComponent::FireRocketLauncher()
+{
+	FVector StartLocation = GetMuzzleLocation();
+	FVector Direction = GetFireDirection();
+	
+	SpawnProjectile(StartLocation, Direction);
+	UE_LOG(LogWastelandRacers, Log, TEXT("Fired rocket"));
+}
+
+void UWRWeaponComponent::FireShotgun()
+{
+	FVector StartLocation = GetMuzzleLocation();
+	FVector BaseDirection = GetFireDirection();
+	
+	// Fire multiple pellets for shotgun spread
+	for (int32 i = 0; i < 5; i++)
+	{
+		FVector SpreadDirection = BaseDirection;
+		SpreadDirection += FVector(
+			FMath::RandRange(-0.2f, 0.2f),
+			FMath::RandRange(-0.2f, 0.2f),
+			FMath::RandRange(-0.1f, 0.1f)
+		);
+		SpreadDirection.Normalize();
+		
+		SpawnProjectile(StartLocation, SpreadDirection);
+	}
+	
+	UE_LOG(LogWastelandRacers, Log, TEXT("Fired shotgun"));
+}
+
+void UWRWeaponComponent::FireFlamethrower()
+{
+	FVector StartLocation = GetMuzzleLocation();
+	FVector Direction = GetFireDirection();
+	
+	// Flamethrower creates a short-range flame effect
+	SpawnProjectile(StartLocation, Direction);
+	UE_LOG(LogWastelandRacers, Log, TEXT("Fired flamethrower"));
+}
+
+void UWRWeaponComponent::SpawnProjectile(const FVector& StartLocation, const FVector& Direction)
+{
+	if (!ProjectileClass)
+	{
+		UE_LOG(LogWastelandRacers, Warning, TEXT("No projectile class set for weapon"));
+		return;
+	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = GetOwner();
 	SpawnParams.Instigator = Cast<APawn>(GetOwner());
 
-	GetWorld()->SpawnActor<AWRGrenade>(
-		AWRGrenade::StaticClass(), SpawnLocation, SpawnRotation, SpawnParams);
-}
+	FRotator SpawnRotation = Direction.Rotation();
+	
+	AWRProjectile* Projectile = World->SpawnActor<AWRProjectile>(
+		ProjectileClass,
+		StartLocation,
+		SpawnRotation,
+		SpawnParams
+	);
 
-void UWRWeaponComponent::ApplySlagDebuff()
-{
-	// Find target and apply slag effect
-	AWRKart* Target = FindNearestTarget();
-	if (Target)
+	if (Projectile)
 	{
-		// Apply slag debuff to target (to be implemented)
+		Projectile->SetDamage(WeaponDamage);
+		Projectile->SetWeaponType(CurrentWeaponType);
 	}
 }
 
-void UWRWeaponComponent::ActivateShield()
+FVector UWRWeaponComponent::GetFireDirection() const
 {
-	AWRKart* OwnerKart = GetOwnerKart();
-	if (OwnerKart)
+	AActor* Owner = GetOwner();
+	if (!Owner)
 	{
-		// Activate shield on owner kart (to be implemented)
-	}
-}
-
-void UWRWeaponComponent::ActivateSpeedBoost()
-{
-	AWRKart* OwnerKart = GetOwnerKart();
-	if (OwnerKart)
-	{
-		OwnerKart->ActivateBoost(2.0f);
-	}
-}
-
-void UWRWeaponComponent::UseTeleportPad()
-{
-	AWRKart* OwnerKart = GetOwnerKart();
-	if (OwnerKart)
-	{
-		// Teleport kart forward (to be implemented)
-		FVector TeleportLocation = OwnerKart->GetActorLocation() + (OwnerKart->GetActorForwardVector() * 1000.0f);
-		OwnerKart->SetActorLocation(TeleportLocation);
-	}
-}
-
-void UWRWeaponComponent::DeployDecoy()
-{
-	// Spawn decoy hologram (to be implemented)
-}
-
-AWRKart* UWRWeaponComponent::GetOwnerKart() const
-{
-	return Cast<AWRKart>(GetOwner());
-}
-
-AWRKart* UWRWeaponComponent::FindNearestTarget() const
-{
-	AWRKart* OwnerKart = Cast<AWRKart>(GetOwner());
-	if (!OwnerKart)
-		return nullptr;
-
-	AWRKart* NearestTarget = nullptr;
-	float NearestDistance = FLT_MAX;
-
-	for (TActorIterator<AWRKart> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-	{
-		AWRKart* OtherKart = *ActorItr;
-		if (OtherKart != OwnerKart)
-		{
-			float Distance = FVector::Dist(OwnerKart->GetActorLocation(), OtherKart->GetActorLocation());
-			if (Distance < NearestDistance)
-			{
-				NearestDistance = Distance;
-				NearestTarget = OtherKart;
-			}
-		}
+		return FVector::ForwardVector;
 	}
 
-	return NearestTarget;
+	return Owner->GetActorForwardVector();
+}
+
+FVector UWRWeaponComponent::GetMuzzleLocation() const
+{
+	AActor* Owner = GetOwner();
+	if (!Owner)
+	{
+		return FVector::ZeroVector;
+	}
+
+	// Get location slightly in front of the kart
+	FVector ForwardVector = Owner->GetActorForwardVector();
+	FVector OwnerLocation = Owner->GetActorLocation();
+	
+	return OwnerLocation + (ForwardVector * 100.0f) + FVector(0, 0, 50.0f);
 }
