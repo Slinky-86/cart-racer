@@ -1,0 +1,249 @@
+// Widget Blueprint: WBP_Multiplayer
+// 
+// Complete multiplayer interface
+// Features:
+// - Create session panel
+// - Server browser with filtering
+// - Join session functionality
+// - Password protection
+// - LAN/Online toggle
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_Multiplayer"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Background
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="BackgroundImage"
+               Brush=(ImageSize=(X=1920,Y=1080),Texture=/Game/UI/Textures/T_Multiplayer_Background.T_Multiplayer_Background)
+            End Object
+            Anchors=(Minimum=(X=0,Y=0),Maximum=(X=1,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Create Session Panel
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="CreateSessionPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.VerticalBox Name="CreateSessionBox"
+                  
+                  // Header
+                  Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="CreateSessionHeader"
+                        Text="CREATE SESSION"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                        Justification=Center
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Session Name
+                  Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="SessionNameBox"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="SessionNameLabel"
+                              Text="Session Name:"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.4)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.EditableTextBox Name="SessionNameTextBox"
+                              Text="Wasteland Race"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.6)
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=10)
+                  End Object
+                  
+                  // Max Players
+                  Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="MaxPlayersBox"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="MaxPlayersLabel"
+                              Text="Max Players:"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.4)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.SpinBox Name="MaxPlayersSpinBox"
+                              MinValue=2
+                              MaxValue=8
+                              Value=8
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.6)
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=10)
+                  End Object
+                  
+                  // Password
+                  Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="PasswordBox"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="PasswordLabel"
+                              Text="Password:"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.4)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.EditableTextBox Name="PasswordTextBox"
+                              HintText="Optional"
+                              IsPassword=true
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.6)
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=10)
+                  End Object
+                  
+                  // LAN Toggle
+                  Slot[4]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="LANBox"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="LANLabel"
+                              Text="LAN Game:"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                           End Object
+                           Size=(SizeRule=Fill,Value=0.4)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.CheckBox Name="LANCheckBox"
+                              IsChecked=false
+                           End Object
+                           Size=(SizeRule=Auto)
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Create Button
+                  Slot[5]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.Button Name="CreateSessionButton"
+                        Style=(Normal=(Tint=(R=0,G=1,B=0,A=1)),Hovered=(Tint=(R=0.2,G=1,B=0.2,A=1)))
+                        Content=Begin Object Class=/Script/UMG.TextBlock Name="CreateSessionText"
+                           Text="CREATE SESSION"
+                           Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=18)
+                           Justification=Center
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                  End Object
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.05,Y=0.1),Maximum=(X=0.45,Y=0.8))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Server Browser Panel
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="ServerBrowserPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.VerticalBox Name="ServerBrowserBox"
+                  
+                  // Header with Refresh
+                  Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="BrowserHeaderBox"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="ServerBrowserHeader"
+                              Text="SERVER BROWSER"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                           End Object
+                           Size=(SizeRule=Fill,Value=1)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.Button Name="RefreshButton"
+                              Style=(Normal=(Tint=(R=0,G=1,B=1,A=1)),Hovered=(Tint=(R=0.2,G=1,B=1,A=1)))
+                              Content=Begin Object Class=/Script/UMG.TextBlock Name="RefreshText"
+                                 Text="REFRESH"
+                                 Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=16)
+                                 Justification=Center
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Server List
+                  Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.ScrollBox Name="ServerListScrollBox"
+                        
+                        // Server entries will be populated dynamically
+                        
+                     End Object
+                     Size=(SizeRule=Fill,Value=1)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Join Button
+                  Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.Button Name="JoinSelectedButton"
+                        Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)))
+                        Content=Begin Object Class=/Script/UMG.TextBlock Name="JoinSelectedText"
+                           Text="JOIN SELECTED"
+                           Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=18)
+                           Justification=Center
+                        End Object
+                     End Object
+                     Size=(SizeRule=Auto)
+                  End Object
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.55,Y=0.1),Maximum=(X=0.95,Y=0.8))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Status Panel
+         Slot[3]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="StatusPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.9)
+               Content=Begin Object Class=/Script/UMG.TextBlock Name="StatusText"
+                  Text="Ready to connect"
+                  Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                  ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                  Justification=Center
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.2,Y=0.82),Maximum=(X=0.8,Y=0.87))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Back Button
+         Slot[4]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Button Name="BackButton"
+               Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)))
+               Content=Begin Object Class=/Script/UMG.TextBlock Name="BackText"
+                  Text="BACK TO MAIN MENU"
+                  Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                  Justification=Center
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.35,Y=0.9),Maximum=(X=0.65,Y=0.98))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

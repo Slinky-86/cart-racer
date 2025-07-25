@@ -1,0 +1,56 @@
+// Blueprint Class: BP_RealisticAssetSetup
+// Parent Class: Actor
+// 
+// Automatically sets up realistic materials and lighting for imported assets
+// Features:
+// - Scans for imported meshes and applies appropriate materials
+// - Sets up realistic lighting for each environment
+// - Configures LOD systems for performance
+// - Handles texture streaming and memory management
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_RealisticAssetSetup_C"
+   ParentClass=/Script/Engine.Actor
+   ClassGeneratedBy=/Game/Blueprints/Rendering/BP_RealisticAssetSetup.BP_RealisticAssetSetup
+   
+   // Asset Categories and Material Assignments
+   Begin Object Class=/Script/Engine.DataTable Name="AssetMaterialMap"
+      RowStruct=/Script/WastelandRacers.FAssetMaterialMapping
+      
+      // Vehicle Assets
+      RowData["Kart_Chassis"]=(AssetPattern="*Kart*Chassis*",MaterialPath="/Game/Materials/Vehicles/M_Kart_Paint_Realistic.M_Kart_Paint_Realistic")
+      RowData["Kart_Wheels"]=(AssetPattern="*Wheel*",MaterialPath="/Game/Materials/Vehicles/M_Kart_Rubber_Realistic.M_Kart_Rubber_Realistic")
+      RowData["Kart_Metal"]=(AssetPattern="*Metal*",MaterialPath="/Game/Materials/Vehicles/M_Kart_Metal_Realistic.M_Kart_Metal_Realistic")
+      
+      // Track Assets
+      RowData["Track_Asphalt"]=(AssetPattern="*Track*Asphalt*",MaterialPath="/Game/Materials/Tracks/M_Track_Asphalt_Realistic.M_Track_Asphalt_Realistic")
+      RowData["Track_Dirt"]=(AssetPattern="*Track*Dirt*",MaterialPath="/Game/Materials/Tracks/M_Track_Dirt_Realistic.M_Track_Dirt_Realistic")
+      RowData["Track_Barriers"]=(AssetPattern="*Barrier*",MaterialPath="/Game/Materials/Environment/M_Concrete_Realistic.M_Concrete_Realistic")
+      
+      // Character Assets
+      RowData["Character_Skin"]=(AssetPattern="*Character*Skin*",MaterialPath="/Game/Materials/Characters/M_Character_Skin_Realistic.M_Character_Skin_Realistic")
+      RowData["Character_Clothing"]=(AssetPattern="*Clothing*",MaterialPath="/Game/Materials/Characters/M_Character_Clothing_Realistic.M_Character_Clothing_Realistic")
+      
+      // Environment Assets
+      RowData["Environment_Rock"]=(AssetPattern="*Rock*",MaterialPath="/Game/Materials/Environment/M_Rock_Realistic.M_Rock_Realistic")
+      RowData["Environment_Metal"]=(AssetPattern="*Building*Metal*",MaterialPath="/Game/Materials/Environment/M_Building_Metal_Realistic.M_Building_Metal_Realistic")
+      RowData["Environment_Vegetation"]=(AssetPattern="*Plant*",MaterialPath="/Game/Materials/Environment/M_Vegetation_Realistic.M_Vegetation_Realistic")
+   End Object
+   
+   // Lighting Presets for Different Environments
+   Begin Object Class=/Script/Engine.DataTable Name="LightingPresets"
+      RowStruct=/Script/WastelandRacers.FEnvironmentLighting
+      
+      RowData["Pandora_Desert"]=(SunIntensity=4.0,SunColor=(R=1.0,G=0.9,B=0.7),SkyIntensity=0.8,FogColor=(R=0.8,G=0.7,B=0.5))
+      RowData["Opportunity_Urban"]=(SunIntensity=2.5,SunColor=(R=0.9,G=0.9,B=1.0),SkyIntensity=1.2,FogColor=(R=0.6,G=0.6,B=0.7))
+      RowData["Eridium_Underground"]=(SunIntensity=0.5,SunColor=(R=0.4,G=0.2,B=0.8),SkyIntensity=0.3,FogColor=(R=0.3,G=0.1,B=0.5))
+      RowData["Wildlife_Forest"]=(SunIntensity=3.0,SunColor=(R=0.9,G=1.0,B=0.8),SkyIntensity=1.0,FogColor=(R=0.5,G=0.7,B=0.4))
+      RowData["Hyperion_Lunar"]=(SunIntensity=5.0,SunColor=(R=1.0,G=1.0,B=1.0),SkyIntensity=0.2,FogColor=(R=0.1,G=0.1,B=0.2))
+   End Object
+   
+   // Performance Settings
+   bAutoGenerateLODs=true
+   bOptimizeForMobile=true
+   bUseTextureStreaming=true
+   MaxTextureResolution=2048
+   
+End Object

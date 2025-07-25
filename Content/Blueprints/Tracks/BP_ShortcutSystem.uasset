@@ -1,0 +1,36 @@
+// Blueprint Class: BP_ShortcutSystem
+// Parent Class: WRShortcutSystem
+// 
+// Complete shortcut system with Mario Kart-style hidden paths
+// Features:
+// - Hidden shortcuts requiring discovery
+// - Skill-based shortcuts with speed/boost requirements
+// - Environmental shortcuts using track features
+// - Risk/reward mechanics with hazards
+// - Visual feedback and discovery effects
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_ShortcutSystem_C"
+   ParentClass=/Script/WastelandRacers.WRShortcutSystem
+   ClassGeneratedBy=/Game/Blueprints/Tracks/BP_ShortcutSystem.BP_ShortcutSystem
+   
+   // Discovery Effects
+   Begin Object Class=/Script/Niagara.NiagaraSystem Name="DiscoveryEffect"
+      Asset=/Game/Effects/Particles/NS_Shortcut_Discovery.NS_Shortcut_Discovery
+   End Object
+   
+   // Discovery Audio
+   Begin Object Class=/Script/Engine.SoundCue Name="DiscoverySound"
+      FirstNode=/Game/Audio/SFX/SC_Shortcut_Discovery.SC_Shortcut_Discovery
+   End Object
+   
+   // Hidden Path Mesh
+   Begin Object Class=/Script/Engine.StaticMesh Name="HiddenPathMesh"
+      StaticMesh=/Game/Meshes/Tracks/SM_Hidden_Path.SM_Hidden_Path
+   End Object
+   
+   // Shortcut Material
+   Begin Object Class=/Script/Engine.MaterialInterface Name="ShortcutMaterial"
+      Material=/Game/Materials/Tracks/M_Shortcut_Path.M_Shortcut_Path
+   End Object
+   
+End Object

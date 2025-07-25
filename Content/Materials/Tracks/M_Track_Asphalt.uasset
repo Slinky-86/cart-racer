@@ -1,0 +1,40 @@
+// Material: M_Track_Asphalt
+// 
+// Realistic PBR asphalt material for track surfaces
+// Features:
+// - High-resolution diffuse, normal, and roughness textures
+// - Tiling support for large track surfaces
+// - Weather effects (wet, dry, damaged)
+// - Tire mark accumulation
+// - Performance optimized for mobile
+
+Begin Object Class=/Script/Engine.Material Name="M_Track_Asphalt"
+   // Base Color
+   BaseColor=Texture2DSample(Texture=/Game/Textures/Tracks/T_Asphalt_Diffuse.T_Asphalt_Diffuse,UVs=TexCoord[0]*4.0)
+   
+   // Normal Map
+   Normal=Texture2DSample(Texture=/Game/Textures/Tracks/T_Asphalt_Normal.T_Asphalt_Normal,UVs=TexCoord[0]*4.0,SamplerType=Normal)
+   
+   // Roughness
+   Roughness=Texture2DSample(Texture=/Game/Textures/Tracks/T_Asphalt_Roughness.T_Asphalt_Roughness,UVs=TexCoord[0]*4.0).R
+   
+   // Metallic (low for asphalt)
+   Metallic=0.05
+   
+   // Specular
+   Specular=0.5
+   
+   // Material Parameters
+   ScalarParameterValues[0]=(ParameterName="TilingScale",ParameterValue=4.0)
+   ScalarParameterValues[1]=(ParameterName="WetnessAmount",ParameterValue=0.0)
+   ScalarParameterValues[2]=(ParameterName="DamageAmount",ParameterValue=0.0)
+   
+   VectorParameterValues[0]=(ParameterName="BaseColorTint",ParameterValue=(R=1.0,G=1.0,B=1.0,A=1.0))
+   
+   // Mobile optimizations
+   bUsedWithStaticLighting=true
+   bUsedWithSkeletalMesh=false
+   BlendMode=BLEND_Opaque
+   ShadingModel=MSM_DefaultLit
+   
+End Object

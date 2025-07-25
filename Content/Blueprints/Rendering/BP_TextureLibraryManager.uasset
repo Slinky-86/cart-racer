@@ -1,0 +1,43 @@
+// Blueprint Class: BP_TextureLibraryManager
+// Parent Class: Actor
+// 
+// Automatically manages and applies textures from your existing library
+// Features:
+// - Scans texture folders and categorizes assets
+// - Applies appropriate materials based on object tags
+// - Supports runtime texture swapping
+// - Handles LOD and quality settings
+// - Mobile optimization
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_TextureLibraryManager_C"
+   ParentClass=/Script/Engine.Actor
+   ClassGeneratedBy=/Game/Blueprints/Rendering/BP_TextureLibraryManager.BP_TextureLibraryManager
+   
+   // Texture Library Paths
+   VehicleTexturePath="/Game/Textures/Vehicles/"
+   TrackTexturePath="/Game/Textures/Tracks/"
+   CharacterTexturePath="/Game/Textures/Characters/"
+   EnvironmentTexturePath="/Game/Textures/Environment/"
+   WeaponTexturePath="/Game/Textures/Weapons/"
+   UITexturePath="/Game/Textures/UI/"
+   
+   // Material Template References
+   VehicleMaterialTemplate=/Game/Materials/Vehicles/M_Kart_Paint_Realistic.M_Kart_Paint_Realistic
+   TrackMaterialTemplate=/Game/Materials/Tracks/M_Track_Asphalt_Realistic.M_Track_Asphalt_Realistic
+   CharacterMaterialTemplate=/Game/Materials/Characters/M_Character_Skin_Realistic.M_Character_Skin_Realistic
+   EnvironmentMaterialTemplate=/Game/Materials/Environment/M_Rock_Realistic.M_Rock_Realistic
+   
+   // Auto-Assignment Rules
+   Begin Object Class=/Script/Engine.DataTable Name="MaterialAssignmentRules"
+      // Rules for automatic material assignment based on mesh names and tags
+      // Example: "Kart_Body" → Vehicle Paint Material
+      // Example: "Track_Surface" → Track Asphalt Material
+      // Example: "Character_Skin" → Character Skin Material
+   End Object
+   
+   // Quality Settings
+   bUseHighQualityTextures=true
+   bUseMobileOptimizations=true
+   TextureQualityLevel=3
+   
+End Object

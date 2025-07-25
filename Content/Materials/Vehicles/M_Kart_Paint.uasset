@@ -1,0 +1,39 @@
+// Material: M_Kart_Paint
+// 
+// Realistic PBR paint material for kart bodies
+// Features:
+// - Customizable paint colors
+// - Metallic and matte finish options
+// - Damage and wear effects
+// - Borderlands-style color schemes
+// - Mobile optimized
+
+Begin Object Class=/Script/Engine.Material Name="M_Kart_Paint"
+   // Base Color (customizable)
+   BaseColor=VectorParameter(ParameterName="PaintColor",DefaultValue=(R=0.8,G=0.2,B=0.1,A=1.0))
+   
+   // Metallic finish
+   Metallic=ScalarParameter(ParameterName="MetallicAmount",DefaultValue=0.8)
+   
+   // Roughness for paint finish
+   Roughness=ScalarParameter(ParameterName="RoughnessAmount",DefaultValue=0.2)
+   
+   // Specular
+   Specular=0.9
+   
+   // Damage overlay
+   BaseColor=Lerp(BaseColor,Texture2DSample(Texture=/Game/Textures/Vehicles/T_Damage_Mask.T_Damage_Mask),ScalarParameter(ParameterName="DamageAmount",DefaultValue=0.0))
+   
+   // Material Parameters for customization
+   ScalarParameterValues[0]=(ParameterName="MetallicAmount",ParameterValue=0.8)
+   ScalarParameterValues[1]=(ParameterName="RoughnessAmount",ParameterValue=0.2)
+   ScalarParameterValues[2]=(ParameterName="DamageAmount",ParameterValue=0.0)
+   
+   VectorParameterValues[0]=(ParameterName="PaintColor",ParameterValue=(R=0.8,G=0.2,B=0.1,A=1.0))
+   VectorParameterValues[1]=(ParameterName="SecondaryColor",ParameterValue=(R=0.1,G=0.1,B=0.1,A=1.0))
+   
+   // Mobile optimizations
+   BlendMode=BLEND_Opaque
+   ShadingModel=MSM_DefaultLit
+   
+End Object

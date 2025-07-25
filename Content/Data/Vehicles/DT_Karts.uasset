@@ -1,0 +1,131 @@
+// Data Table: DT_Karts
+// Row Structure: WRKartData
+// 
+// Contains all kart/vehicle data including stats, customization options, and unlock requirements
+
+Begin Object Class=/Script/Engine.DataTable Name="DT_Karts"
+   RowStruct=/Script/WastelandRacers.WRKartData
+   
+   // Bandit Technical - Balanced starter kart
+   RowData["BanditTechnical"]=(
+      KartClass=BanditTechnical,
+      KartName="Bandit Technical",
+      KartDescription="Rugged wasteland vehicle with balanced performance",
+      KartMesh=/Game/Meshes/Vehicles/SK_BanditTechnical.SK_BanditTechnical,
+      KartStats=(MaxSpeed=1200.0,Acceleration=800.0,Handling=1.0,Weight=1500.0,BoostPower=2000.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_V8_Rough.SC_Engine_V8_Rough,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Bandit.SC_Horn_Bandit,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Nitrous.SC_Boost_Nitrous,
+      CustomizationOptions=(
+         PaintJobs=(/Game/Materials/Vehicles/M_Bandit_Red.M_Bandit_Red,/Game/Materials/Vehicles/M_Bandit_Blue.M_Bandit_Blue,/Game/Materials/Vehicles/M_Bandit_Green.M_Bandit_Green),
+         SpoilerOptions=(/Game/Meshes/Vehicles/Parts/SM_Spoiler_Basic.SM_Spoiler_Basic,/Game/Meshes/Vehicles/Parts/SM_Spoiler_Racing.SM_Spoiler_Racing),
+         WheelOptions=(/Game/Meshes/Vehicles/Parts/SM_Wheel_Bandit.SM_Wheel_Bandit,/Game/Meshes/Vehicles/Parts/SM_Wheel_Spiked.SM_Wheel_Spiked),
+         ArmorOptions=(/Game/Meshes/Vehicles/Parts/SM_Armor_Scrap.SM_Armor_Scrap,/Game/Meshes/Vehicles/Parts/SM_Armor_Plated.SM_Armor_Plated)
+      ),
+      bIsUnlocked=true
+   )
+   
+   // Psycho Buggy - High acceleration, low top speed
+   RowData["PsychoBuggy"]=(
+      KartClass=PsychoBuggy,
+      KartName="Psycho Buggy",
+      KartDescription="Lightweight buggy with explosive acceleration",
+      KartMesh=/Game/Meshes/Vehicles/SK_PsychoBuggy.SK_PsychoBuggy,
+      KartStats=(MaxSpeed=1000.0,Acceleration=1200.0,Handling=1.2,Weight=1200.0,BoostPower=2500.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_V6_High.SC_Engine_V6_High,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Psycho.SC_Horn_Psycho,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Turbo.SC_Boost_Turbo,
+      bIsUnlocked=true
+   )
+   
+   // Hyperion Scout - High tech, balanced stats
+   RowData["HyperionScout"]=(
+      KartClass=HyperionScout,
+      KartName="Hyperion Scout",
+      KartDescription="Corporate hover-tech with superior handling",
+      KartMesh=/Game/Meshes/Vehicles/SK_HyperionScout.SK_HyperionScout,
+      KartStats=(MaxSpeed=1300.0,Acceleration=900.0,Handling=1.5,Weight=1400.0,BoostPower=2200.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_Hover.SC_Engine_Hover,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Corporate.SC_Horn_Corporate,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Energy.SC_Boost_Energy,
+      bIsUnlocked=false,
+      UnlockRequirement=3,
+      UnlockDescription="Win 3 races"
+   )
+   
+   // Dahl Civilian - Military precision
+   RowData["DahlCivilian"]=(
+      KartClass=DahlCivilian,
+      KartName="Dahl Civilian",
+      KartDescription="Military-grade vehicle with tactical advantages",
+      KartMesh=/Game/Meshes/Vehicles/SK_DahlCivilian.SK_DahlCivilian,
+      KartStats=(MaxSpeed=1150.0,Acceleration=850.0,Handling=1.3,Weight=1600.0,BoostPower=1900.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_Military.SC_Engine_Military,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Military.SC_Horn_Military,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Military.SC_Boost_Military,
+      bIsUnlocked=false,
+      UnlockRequirement=5,
+      UnlockDescription="Complete military cup"
+   )
+   
+   // Vladof Runner - Soviet-style heavy kart
+   RowData["VladofRunner"]=(
+      KartClass=VladofRunner,
+      KartName="Vladof Runner",
+      KartDescription="Heavy-duty kart with superior durability",
+      KartMesh=/Game/Meshes/Vehicles/SK_VladofRunner.SK_VladofRunner,
+      KartStats=(MaxSpeed=1100.0,Acceleration=700.0,Handling=0.8,Weight=1800.0,BoostPower=1800.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_Heavy.SC_Engine_Heavy,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Soviet.SC_Horn_Soviet,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Heavy.SC_Boost_Heavy,
+      bIsUnlocked=false,
+      UnlockRequirement=8,
+      UnlockDescription="Survive 100 weapon hits"
+   )
+   
+   // Maliwan Speeder - Elemental tech kart
+   RowData["MaliwanSpeeder"]=(
+      KartClass=MaliwanSpeeder,
+      KartName="Maliwan Speeder",
+      KartDescription="Elemental-powered kart with energy weapons",
+      KartMesh=/Game/Meshes/Vehicles/SK_MaliwanSpeeder.SK_MaliwanSpeeder,
+      KartStats=(MaxSpeed=1400.0,Acceleration=1000.0,Handling=1.1,Weight=1300.0,BoostPower=2400.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_Energy.SC_Engine_Energy,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Elemental.SC_Horn_Elemental,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Elemental.SC_Boost_Elemental,
+      bIsUnlocked=false,
+      UnlockRequirement=12,
+      UnlockDescription="Use 25 elemental weapons"
+   )
+   
+   // Torgue Destroyer - Maximum power and weight
+   RowData["TorgueDestroyer"]=(
+      KartClass=TorgueDestroyer,
+      KartName="Torgue Destroyer",
+      KartDescription="EXPLOSIVE kart with MAXIMUM POWER!",
+      KartMesh=/Game/Meshes/Vehicles/SK_TorgueDestroyer.SK_TorgueDestroyer,
+      KartStats=(MaxSpeed=1500.0,Acceleration=600.0,Handling=0.6,Weight=2000.0,BoostPower=3000.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_Explosive.SC_Engine_Explosive,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Explosive.SC_Horn_Explosive,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Explosive.SC_Boost_Explosive,
+      bIsUnlocked=false,
+      UnlockRequirement=20,
+      UnlockDescription="Deal 500 explosive damage"
+   )
+   
+   // Jakobs Cruiser - Classic style with precision
+   RowData["JakobsCruiser"]=(
+      KartClass=JakobsCruiser,
+      KartName="Jakobs Cruiser",
+      KartDescription="Classic craftsmanship with reliable performance",
+      KartMesh=/Game/Meshes/Vehicles/SK_JakobsCruiser.SK_JakobsCruiser,
+      KartStats=(MaxSpeed=1250.0,Acceleration=900.0,Handling=1.4,Weight=1450.0,BoostPower=2100.0),
+      EngineSound=/Game/Audio/Vehicles/SC_Engine_Classic.SC_Engine_Classic,
+      HornSound=/Game/Audio/Vehicles/SC_Horn_Classic.SC_Horn_Classic,
+      BoostSound=/Game/Audio/Vehicles/SC_Boost_Classic.SC_Boost_Classic,
+      bIsUnlocked=false,
+      UnlockRequirement=15,
+      UnlockDescription="Win with 90% accuracy"
+   )
+   
+End Object

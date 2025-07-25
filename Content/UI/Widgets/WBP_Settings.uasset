@@ -1,0 +1,451 @@
+// Widget Blueprint: WBP_Settings
+// 
+// Complete settings menu with all game options
+// Features:
+// - Graphics settings (Quality, VSync, Frame Rate, FOV)
+// - Audio settings (Master, Music, SFX, Voice, Engine volumes)
+// - Control settings (Mouse sensitivity, Invert Y, Haptic feedback)
+// - UI settings (Show FPS, HUD options)
+// - Save/Load functionality
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_Settings"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Background
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="BackgroundImage"
+               Brush=(ImageSize=(X=1920,Y=1080),Texture=/Game/UI/Textures/T_Settings_Background.T_Settings_Background)
+            End Object
+            Anchors=(Minimum=(X=0,Y=0),Maximum=(X=1,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Settings Panel
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="SettingsPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.ScrollBox Name="SettingsScrollBox"
+                  
+                  // Graphics Section
+                  Slot[0]=Begin Object Class=/Script/UMG.ScrollBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="GraphicsSection"
+                        
+                        // Graphics Header
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="GraphicsHeader"
+                              Text="GRAPHICS SETTINGS"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Graphics Quality
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="GraphicsQualityBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="GraphicsQualityLabel"
+                                    Text="Graphics Quality:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.ComboBoxString Name="GraphicsQualityCombo"
+                                    OptionsSource=("Low","Medium","High","Ultra")
+                                    SelectedIndex=2
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // VSync
+                        Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="VSyncBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="VSyncLabel"
+                                    Text="VSync:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.CheckBox Name="VSyncCheckBox"
+                                    IsChecked=true
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Field of View
+                        Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="FOVBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="FOVLabel"
+                                    Text="Field of View:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=0.6)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="FOVSlider"
+                                    MinValue=70
+                                    MaxValue=120
+                                    Value=90
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[2]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="FOVValueText"
+                                    Text="90"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=0,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=20)
+                        End Object
+                        
+                     End Object
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Audio Section
+                  Slot[1]=Begin Object Class=/Script/UMG.ScrollBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="AudioSection"
+                        
+                        // Audio Header
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="AudioHeader"
+                              Text="AUDIO SETTINGS"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Master Volume
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="MasterVolumeBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="MasterVolumeLabel"
+                                    Text="Master Volume:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="MasterVolumeSlider"
+                                    MinValue=0
+                                    MaxValue=1
+                                    Value=1
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Music Volume
+                        Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="MusicVolumeBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="MusicVolumeLabel"
+                                    Text="Music Volume:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="MusicVolumeSlider"
+                                    MinValue=0
+                                    MaxValue=1
+                                    Value=0.8
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // SFX Volume
+                        Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="SFXVolumeBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="SFXVolumeLabel"
+                                    Text="SFX Volume:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="SFXVolumeSlider"
+                                    MinValue=0
+                                    MaxValue=1
+                                    Value=1
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Voice Volume
+                        Slot[4]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="VoiceVolumeBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="VoiceVolumeLabel"
+                                    Text="Voice Volume:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="VoiceVolumeSlider"
+                                    MinValue=0
+                                    MaxValue=1
+                                    Value=1
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Engine Volume
+                        Slot[5]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="EngineVolumeBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="EngineVolumeLabel"
+                                    Text="Engine Volume:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="EngineVolumeSlider"
+                                    MinValue=0
+                                    MaxValue=1
+                                    Value=0.9
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=20)
+                        End Object
+                        
+                     End Object
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Control Section
+                  Slot[2]=Begin Object Class=/Script/UMG.ScrollBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="ControlSection"
+                        
+                        // Control Header
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="ControlHeader"
+                              Text="CONTROL SETTINGS"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Mouse Sensitivity
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="MouseSensitivityBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="MouseSensitivityLabel"
+                                    Text="Mouse Sensitivity:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.Slider Name="MouseSensitivitySlider"
+                                    MinValue=0.1
+                                    MaxValue=3.0
+                                    Value=1.0
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Invert Y Axis
+                        Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="InvertYBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="InvertYLabel"
+                                    Text="Invert Y Axis:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.CheckBox Name="InvertYCheckBox"
+                                    IsChecked=false
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Haptic Feedback
+                        Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="HapticFeedbackBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="HapticFeedbackLabel"
+                                    Text="Haptic Feedback:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.CheckBox Name="HapticFeedbackCheckBox"
+                                    IsChecked=true
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=20)
+                        End Object
+                        
+                     End Object
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // UI Section
+                  Slot[3]=Begin Object Class=/Script/UMG.ScrollBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="UISection"
+                        
+                        // UI Header
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="UIHeader"
+                              Text="UI SETTINGS"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Show FPS
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="ShowFPSBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="ShowFPSLabel"
+                                    Text="Show FPS Counter:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=18)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.CheckBox Name="ShowFPSCheckBox"
+                                    IsChecked=false
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                     End Object
+                  End Object
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.1,Y=0.1),Maximum=(X=0.9,Y=0.8))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Button Panel
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.HorizontalBox Name="ButtonPanel"
+               
+               // Apply Button
+               Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="ApplyButton"
+                     Style=(Normal=(Tint=(R=0,G=1,B=0,A=1)),Hovered=(Tint=(R=0.2,G=1,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="ApplyText"
+                        Text="APPLY"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=10)
+               End Object
+               
+               // Reset Button
+               Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="ResetButton"
+                     Style=(Normal=(Tint=(R=1,G=1,B=0,A=1)),Hovered=(Tint=(R=1,G=1,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="ResetText"
+                        Text="RESET"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=10)
+               End Object
+               
+               // Back Button
+               Slot[2]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="BackButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="BackText"
+                        Text="BACK"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.3,Y=0.85),Maximum=(X=0.7,Y=0.95))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

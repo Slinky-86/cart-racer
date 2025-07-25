@@ -1,0 +1,46 @@
+// Blueprint Class: BP_ShortcutGate
+// Parent Class: WRShortcutGate
+// 
+// Speed/boost-activated gates for skill-based shortcuts
+// Features:
+// - Speed requirement checking
+// - Boost requirement validation
+// - Smooth opening/closing animations
+// - Visual and audio feedback
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_ShortcutGate_C"
+   ParentClass=/Script/WastelandRacers.WRShortcutGate
+   ClassGeneratedBy=/Game/Blueprints/Tracks/BP_ShortcutGate.BP_ShortcutGate
+   
+   // Gate Mesh
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="GateMesh"
+      StaticMesh=/Game/Meshes/Tracks/SM_Shortcut_Gate.SM_Shortcut_Gate
+      Materials[0]=/Game/Materials/Tracks/M_Shortcut_Gate.M_Shortcut_Gate
+      CollisionEnabled=QueryAndPhysics
+      CollisionObjectType=WorldStatic
+   End Object
+   
+   // Speed Check Trigger
+   Begin Object Class=/Script/Engine.BoxComponent Name="SpeedCheckTrigger"
+      BoxExtent=(X=300.0,Y=150.0,Z=150.0)
+      CollisionEnabled=QueryOnly
+      CollisionResponseToAllChannels=Ignore
+      CollisionResponseToChannel=Vehicle,Overlap
+   End Object
+   
+   // Opening Effect
+   Begin Object Class=/Script/Niagara.NiagaraSystem Name="OpenEffect"
+      Asset=/Game/Effects/Particles/NS_Gate_Opening.NS_Gate_Opening
+   End Object
+   
+   // Opening Sound
+   Begin Object Class=/Script/Engine.SoundCue Name="OpenSound"
+      FirstNode=/Game/Audio/SFX/SC_Gate_Open.SC_Gate_Open
+   End Object
+   
+   // Default Settings
+   RequiredSpeed=800.0
+   bRequiresBoost=false
+   GateOpenTime=1.5
+   
+End Object

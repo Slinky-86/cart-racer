@@ -1,0 +1,48 @@
+// Blueprint Class: BP_TrackManager
+// Parent Class: WRTrackManager
+// 
+// This Blueprint extends the C++ WRTrackManager class and provides
+// visual scripting interface for track management
+//
+// Key Features:
+// - Track loading and unloading
+// - Environmental setup
+// - Hazard spawning
+// - Power-up placement
+// - Checkpoint configuration
+//
+// Usage:
+// Place this Blueprint in your level and configure the track type
+// The Blueprint will automatically handle all track setup
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_TrackManager_C"
+   ParentClass=/Script/WastelandRacers.WRTrackManager
+   ClassGeneratedBy=/Game/Blueprints/Tracks/BP_TrackManager.BP_TrackManager
+   
+   // Realistic Track Surface Materials
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="TrackSurface"
+      StaticMesh=/Game/Meshes/Tracks/SM_Track_Base.SM_Track_Base
+      Materials[0]=/Game/Materials/Tracks/M_Track_Asphalt_Realistic.M_Track_Asphalt_Realistic
+      ComponentTags[0]="Track_Surface"
+      ComponentTags[1]="AutoMaterial"
+   End Object
+   
+   // Realistic Barrier System
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="TrackBarriers"
+      StaticMesh=/Game/Meshes/Tracks/SM_Track_Barriers.SM_Track_Barriers
+      Materials[0]=/Game/Materials/Environment/M_Concrete_Realistic.M_Concrete_Realistic
+      ComponentTags[0]="Track_Barrier"
+      ComponentTags[1]="AutoMaterial"
+   End Object
+   
+   // Default values for track configuration
+   Begin Object Class=/Script/Engine.DataTable Name="TrackDataTable"
+      RowStruct=/Script/WastelandRacers.FTrackData
+   End Object
+   
+   // Track spawning classes
+   CheckpointClass=/Game/Blueprints/Tracks/BP_TrackCheckpoint.BP_TrackCheckpoint_C
+   PowerUpSpawnerClass=/Game/Blueprints/Gameplay/BP_PowerUpSpawner.BP_PowerUpSpawner_C
+   HazardClass=/Game/Blueprints/Tracks/BP_TrackHazard.BP_TrackHazard_C
+   
+End Object

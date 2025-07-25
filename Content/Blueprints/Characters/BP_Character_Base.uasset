@@ -1,0 +1,49 @@
+// Blueprint Class: BP_Character_Base
+// Parent Class: Character
+// 
+// Base character Blueprint for all Borderlands characters
+//
+// Features:
+// - Character-specific stats and bonuses
+// - Voice line management and playback
+// - Animation Blueprint integration
+// - Customizable appearance and outfits
+//
+// Character Variants:
+// - BP_Character_Axton (Balanced stats, military voice lines)
+// - BP_Character_Maya (Siren abilities, mystical voice lines)
+// - BP_Character_Salvador (Dual-wielding, aggressive voice lines)
+// - BP_Character_Zer0 (Stealth bonuses, haiku voice lines)
+// - BP_Character_Gaige (Tech bonuses, enthusiastic voice lines)
+// - BP_Character_Krieg (Damage bonuses, psychotic voice lines)
+// - BP_Character_TinyTina (Explosive bonuses, chaotic voice lines)
+// - BP_Character_Mordecai (Precision bonuses, sniper voice lines)
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_Character_Base_C"
+   ParentClass=/Script/Engine.Character
+   ClassGeneratedBy=/Game/Blueprints/Characters/BP_Character_Base.BP_Character_Base
+   
+   // Character Mesh
+   Begin Object Class=/Script/Engine.SkeletalMeshComponent Name="CharacterMesh"
+      SkeletalMesh=/Game/Meshes/Characters/SK_Character_Base.SK_Character_Base
+      Materials[0]=/Game/Materials/Characters/M_Character_Skin_Realistic.M_Character_Skin_Realistic
+      Materials[1]=/Game/Materials/Characters/M_Character_Clothing_Realistic.M_Character_Clothing_Realistic
+      Materials[2]=/Game/Materials/Characters/M_Character_Hair_Realistic.M_Character_Hair_Realistic
+      AnimClass=/Game/Animations/Characters/ABP_Character.ABP_Character_C
+      ComponentTags[0]="Character_Body"
+      ComponentTags[1]="AutoMaterial"
+   End Object
+   
+   // Character Data Asset
+   Begin Object Class=/Script/WastelandRacers.WRCharacterData Name="CharacterData"
+      CharacterType=Axton
+      CharacterName="Roland's Successor"
+      CharacterStats=(SpeedBonus=0.0,AccelerationBonus=0.0,HandlingBonus=0.0,WeaponDamageBonus=0.0,DefenseBonus=0.0)
+   End Object
+   
+   // Voice Audio Component
+   Begin Object Class=/Script/Engine.AudioComponent Name="VoiceAudio"
+      bAutoActivate=false
+   End Object
+   
+End Object

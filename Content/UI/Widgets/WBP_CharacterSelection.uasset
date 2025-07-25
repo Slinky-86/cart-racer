@@ -1,0 +1,268 @@
+// Widget Blueprint: WBP_CharacterSelection
+// 
+// Complete character selection interface
+// Features:
+// - Character grid with portraits
+// - Character stats display
+// - Voice line previews
+// - Unlock status indicators
+// - Character-specific information
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_CharacterSelection"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Background
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="BackgroundImage"
+               Brush=(ImageSize=(X=1920,Y=1080),Texture=/Game/UI/Textures/T_CharacterSelection_Background.T_CharacterSelection_Background)
+            End Object
+            Anchors=(Minimum=(X=0,Y=0),Maximum=(X=1,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Character Grid Panel
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="CharacterGridPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.UniformGridPanel Name="CharacterGrid"
+                  
+                  // Character slots will be populated dynamically
+                  // 8 characters in 2 rows of 4
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.05,Y=0.1),Maximum=(X=0.6,Y=0.8))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Character Preview Panel
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="PreviewPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.VerticalBox Name="PreviewBox"
+                  
+                  // Character Portrait
+                  Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.Image Name="CharacterPreviewImage"
+                        Brush=(ImageSize=(X=300,Y=400),Texture=/Game/UI/Textures/Characters/T_Axton_Portrait.T_Axton_Portrait)
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Character Information
+                  Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="CharacterInfoBox"
+                        
+                        // Character Name
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="CharacterNameText"
+                              Text="AXTON"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=32)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                              Justification=Center
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Character Description
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="CharacterDescriptionText"
+                              Text="Balanced soldier with military precision"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=0.9,G=0.9,B=0.9,A=1)
+                              Justification=Center
+                              AutoWrapText=true
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=20)
+                        End Object
+                        
+                        // Character Stats
+                        Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.VerticalBox Name="StatsBox"
+                              
+                              // Speed Stat
+                              Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="SpeedStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="SpeedLabel"
+                                          Text="Speed:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="SpeedStatBar"
+                                          Percent=0.5
+                                          FillColorAndOpacity=(R=0,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Acceleration Stat
+                              Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="AccelerationStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="AccelerationLabel"
+                                          Text="Acceleration:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="AccelerationStatBar"
+                                          Percent=0.5
+                                          FillColorAndOpacity=(R=0,G=1,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Handling Stat
+                              Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="HandlingStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="HandlingLabel"
+                                          Text="Handling:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="HandlingStatBar"
+                                          Percent=0.55
+                                          FillColorAndOpacity=(R=1,G=1,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Weapon Stat
+                              Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="WeaponStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="WeaponLabel"
+                                          Text="Weapon:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="WeaponStatBar"
+                                          Percent=0.6
+                                          FillColorAndOpacity=(R=1,G=0.5,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Defense Stat
+                              Slot[4]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="DefenseStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="DefenseLabel"
+                                          Text="Defense:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="DefenseStatBar"
+                                          Percent=0.55
+                                          FillColorAndOpacity=(R=0,G=0,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=20)
+                              End Object
+                              
+                           End Object
+                           Size=(SizeRule=Auto)
+                        End Object
+                        
+                        // Voice Line Preview Button
+                        Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.Button Name="VoicePreviewButton"
+                              Style=(Normal=(Tint=(R=0.5,G=0.5,B=1,A=1)),Hovered=(Tint=(R=0.7,G=0.7,B=1,A=1)))
+                              Content=Begin Object Class=/Script/UMG.TextBlock Name="VoicePreviewText"
+                                 Text="PLAY VOICE LINE"
+                                 Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=16)
+                                 Justification=Center
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                        End Object
+                        
+                     End Object
+                     Size=(SizeRule=Fill,Value=1)
+                  End Object
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.65,Y=0.1),Maximum=(X=0.95,Y=0.8))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Bottom Button Panel
+         Slot[3]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.HorizontalBox Name="BottomButtonPanel"
+               
+               // Back Button
+               Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="BackButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="BackText"
+                        Text="BACK"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=20)
+               End Object
+               
+               // Confirm Button
+               Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="ConfirmButton"
+                     Style=(Normal=(Tint=(R=0,G=1,B=0,A=1)),Hovered=(Tint=(R=0.2,G=1,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="ConfirmText"
+                        Text="SELECT CHARACTER"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=2)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.2,Y=0.85),Maximum=(X=0.8,Y=0.95))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

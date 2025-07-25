@@ -1,0 +1,141 @@
+// Data Table: DT_Characters
+// Row Structure: WRCharacterData
+// 
+// Contains all playable character data including stats, voice lines, and unlock requirements
+
+Begin Object Class=/Script/Engine.DataTable Name="DT_Characters"
+   RowStruct=/Script/WastelandRacers.WRCharacterData
+   
+   // Axton - The Commando
+   RowData["Axton"]=(
+      CharacterType=Axton,
+      CharacterName="Axton",
+      CharacterDescription="Balanced soldier with military precision",
+      CharacterMesh=/Game/Meshes/Characters/SK_Axton.SK_Axton,
+      CharacterStats=(SpeedBonus=0.0,AccelerationBonus=0.0,HandlingBonus=0.05,WeaponDamageBonus=0.1,DefenseBonus=0.05),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Axton/VO_Axton_RaceStart_01.VO_Axton_RaceStart_01,/Game/Audio/Voice/Axton/VO_Axton_RaceStart_02.VO_Axton_RaceStart_02),
+         WeaponFireLines=(/Game/Audio/Voice/Axton/VO_Axton_WeaponFire_01.VO_Axton_WeaponFire_01,/Game/Audio/Voice/Axton/VO_Axton_WeaponFire_02.VO_Axton_WeaponFire_02),
+         WinLines=(/Game/Audio/Voice/Axton/VO_Axton_Win_01.VO_Axton_Win_01,/Game/Audio/Voice/Axton/VO_Axton_Win_02.VO_Axton_Win_02)
+      ),
+      bIsUnlocked=true
+   )
+   
+   // Maya - The Siren
+   RowData["Maya"]=(
+      CharacterType=Maya,
+      CharacterName="Maya",
+      CharacterDescription="Mystical Siren with elemental powers",
+      CharacterMesh=/Game/Meshes/Characters/SK_Maya.SK_Maya,
+      CharacterStats=(SpeedBonus=0.05,AccelerationBonus=0.0,HandlingBonus=0.1,WeaponDamageBonus=0.0,DefenseBonus=0.0),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Maya/VO_Maya_RaceStart_01.VO_Maya_RaceStart_01,/Game/Audio/Voice/Maya/VO_Maya_RaceStart_02.VO_Maya_RaceStart_02),
+         WeaponFireLines=(/Game/Audio/Voice/Maya/VO_Maya_WeaponFire_01.VO_Maya_WeaponFire_01,/Game/Audio/Voice/Maya/VO_Maya_WeaponFire_02.VO_Maya_WeaponFire_02),
+         WinLines=(/Game/Audio/Voice/Maya/VO_Maya_Win_01.VO_Maya_Win_01,/Game/Audio/Voice/Maya/VO_Maya_Win_02.VO_Maya_Win_02)
+      ),
+      bIsUnlocked=true
+   )
+   
+   // Salvador - The Gunzerker
+   RowData["Salvador"]=(
+      CharacterType=Salvador,
+      CharacterName="Salvador",
+      CharacterDescription="Dual-wielding berserker with raw power",
+      CharacterMesh=/Game/Meshes/Characters/SK_Salvador.SK_Salvador,
+      CharacterStats=(SpeedBonus=0.0,AccelerationBonus=0.1,HandlingBonus=-0.05,WeaponDamageBonus=0.15,DefenseBonus=0.1),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Salvador/VO_Salvador_RaceStart_01.VO_Salvador_RaceStart_01),
+         WeaponFireLines=(/Game/Audio/Voice/Salvador/VO_Salvador_WeaponFire_01.VO_Salvador_WeaponFire_01),
+         WinLines=(/Game/Audio/Voice/Salvador/VO_Salvador_Win_01.VO_Salvador_Win_01)
+      ),
+      bIsUnlocked=false,
+      UnlockRequirement=5,
+      UnlockDescription="Win 5 races"
+   )
+   
+   // Zer0 - The Assassin
+   RowData["Zer0"]=(
+      CharacterType=Zer0,
+      CharacterName="Zer0",
+      CharacterDescription="Mysterious assassin with precision skills",
+      CharacterMesh=/Game/Meshes/Characters/SK_Zer0.SK_Zer0,
+      CharacterStats=(SpeedBonus=0.1,AccelerationBonus=0.05,HandlingBonus=0.15,WeaponDamageBonus=0.05,DefenseBonus=-0.05),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Zer0/VO_Zer0_RaceStart_01.VO_Zer0_RaceStart_01),
+         WeaponFireLines=(/Game/Audio/Voice/Zer0/VO_Zer0_WeaponFire_01.VO_Zer0_WeaponFire_01),
+         WinLines=(/Game/Audio/Voice/Zer0/VO_Zer0_Win_01.VO_Zer0_Win_01)
+      ),
+      bIsUnlocked=false,
+      UnlockRequirement=10,
+      UnlockDescription="Complete 10 time trials"
+   )
+   
+   // Gaige - The Mechromancer
+   RowData["Gaige"]=(
+      CharacterType=Gaige,
+      CharacterName="Gaige",
+      CharacterDescription="Tech-savvy mechromancer with robot companion",
+      CharacterMesh=/Game/Meshes/Characters/SK_Gaige.SK_Gaige,
+      CharacterStats=(SpeedBonus=0.0,AccelerationBonus=0.15,HandlingBonus=0.05,WeaponDamageBonus=0.0,DefenseBonus=0.05),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Gaige/VO_Gaige_RaceStart_01.VO_Gaige_RaceStart_01),
+         WeaponFireLines=(/Game/Audio/Voice/Gaige/VO_Gaige_WeaponFire_01.VO_Gaige_WeaponFire_01),
+         WinLines=(/Game/Audio/Voice/Gaige/VO_Gaige_Win_01.VO_Gaige_Win_01)
+      ),
+      bIsUnlocked=false,
+      UnlockRequirement=15,
+      UnlockDescription="Win a cup series"
+   )
+   
+   // Krieg - The Psycho
+   RowData["Krieg"]=(
+      CharacterType=Krieg,
+      CharacterName="Krieg",
+      CharacterDescription="Psychotic berserker with explosive tendencies",
+      CharacterMesh=/Game/Meshes/Characters/SK_Krieg.SK_Krieg,
+      CharacterStats=(SpeedBonus=-0.05,AccelerationBonus=0.05,HandlingBonus=-0.1,WeaponDamageBonus=0.2,DefenseBonus=0.15),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Krieg/VO_Krieg_RaceStart_01.VO_Krieg_RaceStart_01),
+         WeaponFireLines=(/Game/Audio/Voice/Krieg/VO_Krieg_WeaponFire_01.VO_Krieg_WeaponFire_01),
+         WinLines=(/Game/Audio/Voice/Krieg/VO_Krieg_Win_01.VO_Krieg_Win_01)
+      ),
+      bIsUnlocked=false,
+      UnlockRequirement=25,
+      UnlockDescription="Deal 1000 weapon damage"
+   )
+   
+   // Tiny Tina - The Demolitions Expert
+   RowData["TinyTina"]=(
+      CharacterType=TinyTina,
+      CharacterName="Tiny Tina",
+      CharacterDescription="Explosive expert with chaotic energy",
+      CharacterMesh=/Game/Meshes/Characters/SK_TinyTina.SK_TinyTina,
+      CharacterStats=(SpeedBonus=0.05,AccelerationBonus=0.1,HandlingBonus=0.0,WeaponDamageBonus=0.1,DefenseBonus=0.0),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/TinyTina/VO_TinyTina_RaceStart_01.VO_TinyTina_RaceStart_01),
+         WeaponFireLines=(/Game/Audio/Voice/TinyTina/VO_TinyTina_WeaponFire_01.VO_TinyTina_WeaponFire_01),
+         WinLines=(/Game/Audio/Voice/TinyTina/VO_TinyTina_Win_01.VO_TinyTina_Win_01)
+      ),
+      bIsUnlocked=false,
+      UnlockRequirement=20,
+      UnlockDescription="Use 50 explosive weapons"
+   )
+   
+   // Mordecai - The Hunter
+   RowData["Mordecai"]=(
+      CharacterType=Mordecai,
+      CharacterName="Mordecai",
+      CharacterDescription="Precision hunter with sniper expertise",
+      CharacterMesh=/Game/Meshes/Characters/SK_Mordecai.SK_Mordecai,
+      CharacterStats=(SpeedBonus=0.0,AccelerationBonus=0.0,HandlingBonus=0.1,WeaponDamageBonus=0.15,DefenseBonus=0.0),
+      VoiceLines=(
+         RaceStartLines=(/Game/Audio/Voice/Mordecai/VO_Mordecai_RaceStart_01.VO_Mordecai_RaceStart_01),
+         WeaponFireLines=(/Game/Audio/Voice/Mordecai/VO_Mordecai_WeaponFire_01.VO_Mordecai_WeaponFire_01),
+         WinLines=(/Game/Audio/Voice/Mordecai/VO_Mordecai_Win_01.VO_Mordecai_Win_01)
+      ),
+      bIsUnlocked=false,
+      UnlockRequirement=30,
+      UnlockDescription="Achieve 95% accuracy in 10 races"
+   )
+   
+End Object

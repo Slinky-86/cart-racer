@@ -1,0 +1,50 @@
+// Audio Mixer: AM_Master
+// 
+// Master audio mixer for the entire game
+// Categories:
+// - Master (overall volume)
+// - Music (background music and dynamic tracks)
+// - SFX (sound effects and impacts)
+// - Voice (character voice lines and announcements)
+// - Engine (vehicle engine sounds)
+// - Weapon (weapon firing and explosions)
+// - Ambient (environmental sounds)
+// - UI (menu sounds and notifications)
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="Master"
+   ChildSubmixes[0]=/Game/Audio/AudioMixers/Music.Music
+   ChildSubmixes[1]=/Game/Audio/AudioMixers/SFX.SFX
+   ChildSubmixes[2]=/Game/Audio/AudioMixers/Voice.Voice
+   ChildSubmixes[3]=/Game/Audio/AudioMixers/Engine.Engine
+   ChildSubmixes[4]=/Game/Audio/AudioMixers/Weapon.Weapon
+   ChildSubmixes[5]=/Game/Audio/AudioMixers/Ambient.Ambient
+   ChildSubmixes[6]=/Game/Audio/AudioMixers/UI.UI
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="Music"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="SFX"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="Voice"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="Engine"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="Weapon"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="Ambient"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object
+
+Begin Object Class=/Script/AudioMixer.SoundSubmix Name="UI"
+   ParentSubmix=/Game/Audio/AudioMixers/Master.Master
+End Object

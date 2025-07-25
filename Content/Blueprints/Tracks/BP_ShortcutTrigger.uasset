@@ -1,0 +1,43 @@
+// Blueprint Class: BP_ShortcutTrigger
+// Parent Class: WRShortcutTrigger
+// 
+// Individual shortcut entrance triggers with visual feedback
+// Features:
+// - Difficulty-based color coding
+// - Speed requirement checking
+// - Discovery state management
+// - Path visualization with splines
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_ShortcutTrigger_C"
+   ParentClass=/Script/WastelandRacers.WRShortcutTrigger
+   ClassGeneratedBy=/Game/Blueprints/Tracks/BP_ShortcutTrigger.BP_ShortcutTrigger
+   
+   // Trigger Box
+   Begin Object Class=/Script/Engine.BoxComponent Name="TriggerBox"
+      BoxExtent=(X=150.0,Y=150.0,Z=100.0)
+      CollisionEnabled=QueryOnly
+      CollisionObjectType=WorldStatic
+      CollisionResponseToAllChannels=Ignore
+      CollisionResponseToChannel=Vehicle,Overlap
+   End Object
+   
+   // Visual Mesh
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="VisualMesh"
+      StaticMesh=/Game/Meshes/Tracks/SM_Shortcut_Entrance.SM_Shortcut_Entrance
+      Materials[0]=/Game/Materials/Tracks/M_Shortcut_Entrance.M_Shortcut_Entrance
+      CollisionEnabled=NoCollision
+   End Object
+   
+   // Spline Path
+   Begin Object Class=/Script/Engine.SplineComponent Name="ShortcutPath"
+      SplinePointType=Curve
+      bClosedLoop=false
+   End Object
+   
+   // Visual Effect
+   Begin Object Class=/Script/Niagara.NiagaraComponent Name="VisualEffect"
+      Asset=/Game/Effects/Particles/NS_Shortcut_Indicator.NS_Shortcut_Indicator
+      bAutoActivate=false
+   End Object
+   
+End Object

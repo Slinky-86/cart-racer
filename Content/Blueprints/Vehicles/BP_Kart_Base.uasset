@@ -1,0 +1,71 @@
+// Blueprint Class: BP_Kart_Base
+// Parent Class: WRKart
+// 
+// Base kart Blueprint that all specific kart variants inherit from
+//
+// Features:
+// - Physics-based vehicle movement using Chaos Vehicle
+// - Weapon mounting points
+// - Particle effects for boost, drift, and damage
+// - Audio components for engine, tire, and impact sounds
+// - Customizable materials and meshes
+//
+// Variants:
+// - BP_Kart_BanditTechnical
+// - BP_Kart_PsychoBuggy
+// - BP_Kart_HyperionScout
+// - BP_Kart_DahlCivilian
+// - BP_Kart_VladofRunner
+// - BP_Kart_MaliwanSpeeder
+// - BP_Kart_TorgueDestroyer
+// - BP_Kart_JakobsCruiser
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_Kart_Base_C"
+   ParentClass=/Script/WastelandRacers.WRKart
+   ClassGeneratedBy=/Game/Blueprints/Vehicles/BP_Kart_Base.BP_Kart_Base
+   
+   // Mesh Components
+   Begin Object Class=/Script/Engine.SkeletalMeshComponent Name="KartMesh"
+      SkeletalMesh=/Game/Meshes/Vehicles/SK_Kart_Base.SK_Kart_Base
+      Materials[0]=/Game/Materials/Vehicles/M_Kart_Paint_Realistic.M_Kart_Paint_Realistic
+      Materials[1]=/Game/Materials/Vehicles/M_Kart_Metal_Realistic.M_Kart_Metal_Realistic
+      Materials[2]=/Game/Materials/Vehicles/M_Kart_Rubber_Realistic.M_Kart_Rubber_Realistic
+      ComponentTags[0]="Vehicle_Body"
+      ComponentTags[1]="AutoMaterial"
+   End Object
+   
+   // Weapon Mount Points
+   Begin Object Class=/Script/Engine.SceneComponent Name="WeaponMount_Front"
+      RelativeLocation=(X=150.0,Y=0.0,Z=50.0)
+   End Object
+   
+   Begin Object Class=/Script/Engine.SceneComponent Name="WeaponMount_Rear"
+      RelativeLocation=(X=-150.0,Y=0.0,Z=50.0)
+   End Object
+   
+   // Particle Effects
+   Begin Object Class=/Script/Niagara.NiagaraComponent Name="BoostEffect"
+      Asset=/Game/Effects/Particles/NS_Boost_Trail.NS_Boost_Trail
+      bAutoActivate=false
+   End Object
+   
+   Begin Object Class=/Script/Niagara.NiagaraComponent Name="DriftEffect"
+      Asset=/Game/Effects/Particles/NS_Drift_Smoke.NS_Drift_Smoke
+      bAutoActivate=false
+   End Object
+   
+   // Audio Components
+   Begin Object Class=/Script/Engine.AudioComponent Name="EngineAudio"
+      Sound=/Game/Audio/Vehicles/SC_Engine_Loop.SC_Engine_Loop
+      bAutoActivate=true
+   End Object
+   
+   Begin Object Class=/Script/Engine.AudioComponent Name="TireAudio"
+      Sound=/Game/Audio/Vehicles/SC_Tire_Screech.SC_Tire_Screech
+      bAutoActivate=false
+   End Object
+   
+   // Kart Statistics
+   KartStats=(MaxSpeed=1200.0,Acceleration=800.0,Handling=1.0,Weight=1500.0,BoostPower=2000.0)
+   
+End Object

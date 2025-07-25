@@ -1,0 +1,179 @@
+// Widget Blueprint: WBP_MainMenu
+// 
+// Complete main menu with proper navigation to all game modes
+// Features:
+// - Story Mode access
+// - Online Multiplayer with server browser
+// - Pro Shop access
+// - Settings menu
+// - Character/Kart selection
+// - Borderlands-themed styling
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_MainMenu"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Background Video/Image
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="BackgroundImage"
+               Brush=(ImageSize=(X=1920,Y=1080),Texture=/Game/UI/Textures/T_MainMenu_Background.T_MainMenu_Background)
+            End Object
+            Anchors=(Minimum=(X=0,Y=0),Maximum=(X=1,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Wasteland Racers Logo
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="GameLogo"
+               Brush=(ImageSize=(X=800,Y=200),Texture=/Game/UI/Textures/T_WastelandRacers_Logo.T_WastelandRacers_Logo)
+            End Object
+            Anchors=(Minimum=(X=0.5,Y=0.15),Maximum=(X=0.5,Y=0.15))
+            Offsets=(Left=-400,Top=0,Right=400,Bottom=200)
+         End Object
+         
+         // Main Menu Panel
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.VerticalBox Name="MainMenuBox"
+               
+               // Story Mode Button
+               Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="StoryModeButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)),Pressed=(Tint=(R=0.8,G=0.4,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="StoryModeContent"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.Image Name="StoryModeIcon"
+                              Brush=(ImageSize=(X=32,Y=32),Texture=/Game/UI/Icons/T_StoryMode_Icon.T_StoryMode_Icon)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Right=10)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="StoryModeText"
+                              Text="STORY MODE"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                              Justification=Center
+                           End Object
+                           Size=(SizeRule=Fill,Value=1)
+                        End Object
+                     End Object
+                  End Object
+                  Size=(SizeRule=Auto)
+                  Padding=(Bottom=15)
+               End Object
+               
+               // Multiplayer Button
+               Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="MultiplayerButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)),Pressed=(Tint=(R=0.8,G=0.4,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="MultiplayerContent"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.Image Name="MultiplayerIcon"
+                              Brush=(ImageSize=(X=32,Y=32),Texture=/Game/UI/Icons/T_Multiplayer_Icon.T_Multiplayer_Icon)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Right=10)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="MultiplayerText"
+                              Text="ONLINE MULTIPLAYER"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                              Justification=Center
+                           End Object
+                           Size=(SizeRule=Fill,Value=1)
+                        End Object
+                     End Object
+                  End Object
+                  Size=(SizeRule=Auto)
+                  Padding=(Bottom=15)
+               End Object
+               
+               // Pro Shop Button
+               Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="ProShopButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)),Pressed=(Tint=(R=0.8,G=0.4,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="ProShopContent"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.Image Name="ProShopIcon"
+                              Brush=(ImageSize=(X=32,Y=32),Texture=/Game/UI/Icons/T_ProShop_Icon.T_ProShop_Icon)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Right=10)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="ProShopText"
+                              Text="PRO SHOP"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                              Justification=Center
+                           End Object
+                           Size=(SizeRule=Fill,Value=1)
+                        End Object
+                     End Object
+                  End Object
+                  Size=(SizeRule=Auto)
+                  Padding=(Bottom=15)
+               End Object
+               
+               // Settings Button
+               Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="SettingsButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)),Pressed=(Tint=(R=0.8,G=0.4,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.HorizontalBox Name="SettingsContent"
+                        Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.Image Name="SettingsIcon"
+                              Brush=(ImageSize=(X=32,Y=32),Texture=/Game/UI/Icons/T_Settings_Icon.T_Settings_Icon)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Right=10)
+                        End Object
+                        Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="SettingsText"
+                              Text="SETTINGS"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                              ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                              Justification=Center
+                           End Object
+                           Size=(SizeRule=Fill,Value=1)
+                        End Object
+                     End Object
+                  End Object
+                  Size=(SizeRule=Auto)
+                  Padding=(Bottom=15)
+               End Object
+               
+               // Exit Button
+               Slot[4]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="ExitButton"
+                     Style=(Normal=(Tint=(R=0.8,G=0.2,B=0.2,A=1)),Hovered=(Tint=(R=1,G=0.3,B=0.3,A=1)),Pressed=(Tint=(R=0.6,G=0.1,B=0.1,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="ExitText"
+                        Text="EXIT GAME"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                        ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Auto)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.5,Y=0.5),Maximum=(X=0.5,Y=0.5))
+            Offsets=(Left=-200,Top=-200,Right=200,Bottom=200)
+         End Object
+         
+         // Version Text
+         Slot[3]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.TextBlock Name="VersionText"
+               Text="Wasteland Racers v1.0 - Mayhem Mayhem Edition"
+               Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+               ColorAndOpacity=(R=0.7,G=0.7,B=0.7,A=1)
+            End Object
+            Anchors=(Minimum=(X=1,Y=1),Maximum=(X=1,Y=1))
+            Offsets=(Left=-400,Top=-30,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

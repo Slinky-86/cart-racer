@@ -1,0 +1,115 @@
+// Blueprint Class: BP_ProShop
+// Parent Class: WRProShop
+// 
+// Complete Pro Shop/Dealership system for purchasing upgrades and vehicles
+//
+// Features:
+// - 3 Engine Classes (100cc, 200cc, 300cc) with proper physics
+// - 8 Upgrade Categories with 5 levels each
+// - Currency System (Race Points, Eridium, Premium Currency)
+// - Kart and Character purchasing
+// - Progress tracking and save/load system
+//
+// Shop Categories:
+// - Engine Classes: Unlock 100cc → 200cc → 300cc progression
+// - Kart Upgrades: Engine, Tires, Suspension, Aerodynamics, Weight, Nitrous, Steering, Launch
+// - Vehicle Purchase: All 8 kart types with unlock requirements
+// - Character Purchase: All 8 Borderlands characters
+// - Customization: Paint jobs, spoilers, wheels, exhaust, armor
+
+Begin Object Class=/Script/Engine.BlueprintGeneratedClass Name="BP_ProShop_C"
+   ParentClass=/Script/WastelandRacers.WRProShop
+   ClassGeneratedBy=/Game/Blueprints/Shop/BP_ProShop.BP_ProShop
+   
+   // Shop Display Components
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="ShopBuilding"
+      StaticMesh=/Game/Meshes/Buildings/SM_ProShop_Building.SM_ProShop_Building
+      Materials[0]=/Game/Materials/Buildings/M_ProShop_Exterior.M_ProShop_Exterior
+   End Object
+   
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="ShopSign"
+      StaticMesh=/Game/Meshes/Buildings/SM_ProShop_Sign.SM_ProShop_Sign
+      Materials[0]=/Game/Materials/Buildings/M_ProShop_Sign.M_ProShop_Sign
+      RelativeLocation=(X=0,Y=0,Z=400)
+   End Object
+   
+   // Interaction Trigger
+   Begin Object Class=/Script/Engine.BoxComponent Name="InteractionTrigger"
+      BoxExtent=(X=300,Y=300,Z=200)
+      CollisionEnabled=QueryOnly
+      CollisionResponseToAllChannels=Ignore
+      CollisionResponseToChannel=Pawn,Overlap
+   End Object
+   
+   // Display Karts
+   Begin Object Class=/Script/Engine.SkeletalMeshComponent Name="DisplayKart1"
+      SkeletalMesh=/Game/Meshes/Vehicles/SK_BanditTechnical.SK_BanditTechnical
+      RelativeLocation=(X=200,Y=-150,Z=50)
+      RelativeRotation=(Yaw=45)
+   End Object
+   
+   Begin Object Class=/Script/Engine.SkeletalMeshComponent Name="DisplayKart2"
+      SkeletalMesh=/Game/Meshes/Vehicles/SK_HyperionScout.SK_HyperionScout
+      RelativeLocation=(X=200,Y=150,Z=50)
+      RelativeRotation=(Yaw=-45)
+   End Object
+   
+   // Upgrade Display Stations
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="EngineStation"
+      StaticMesh=/Game/Meshes/Shop/SM_Engine_Display.SM_Engine_Display
+      RelativeLocation=(X=-200,Y=-200,Z=0)
+   End Object
+   
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="TireStation"
+      StaticMesh=/Game/Meshes/Shop/SM_Tire_Display.SM_Tire_Display
+      RelativeLocation=(X=-200,Y=0,Z=0)
+   End Object
+   
+   Begin Object Class=/Script/Engine.StaticMeshComponent Name="AeroStation"
+      StaticMesh=/Game/Meshes/Shop/SM_Aero_Display.SM_Aero_Display
+      RelativeLocation=(X=-200,Y=200,Z=0)
+   End Object
+   
+   // Lighting
+   Begin Object Class=/Script/Engine.PointLightComponent Name="ShopLight1"
+      Intensity=2000
+      LightColor=(R=255,G=200,B=100)
+      AttenuationRadius=1000
+      RelativeLocation=(X=0,Y=-300,Z=300)
+   End Object
+   
+   Begin Object Class=/Script/Engine.PointLightComponent Name="ShopLight2"
+      Intensity=2000
+      LightColor=(R=255,G=200,B=100)
+      AttenuationRadius=1000
+      RelativeLocation=(X=0,Y=300,Z=300)
+   End Object
+   
+   // Audio
+   Begin Object Class=/Script/Engine.AudioComponent Name="ShopAmbient"
+      Sound=/Game/Audio/Ambient/SC_Shop_Ambient.SC_Shop_Ambient
+      bAutoActivate=true
+      VolumeMultiplier=0.5
+   End Object
+   
+   // Currency Display
+   RacePoints=5000
+   EridiumCurrency=100
+   PremiumCurrency=0
+   
+   // Engine Class Unlocks
+   bIs100ccUnlocked=true
+   bIs200ccUnlocked=false
+   bIs300ccUnlocked=false
+   
+   // Upgrade Levels (all start at 0)
+   EngineUpgradeLevel=0
+   TireUpgradeLevel=0
+   SuspensionUpgradeLevel=0
+   AerodynamicsUpgradeLevel=0
+   WeightReductionUpgradeLevel=0
+   NitrousUpgradeLevel=0
+   SteeringUpgradeLevel=0
+   LaunchControlUpgradeLevel=0
+   
+End Object

@@ -1,0 +1,160 @@
+// Widget Blueprint: WBP_RaceHUD
+// 
+// In-race HUD with essential racing information
+// Features:
+// - Position indicator
+// - Lap counter
+// - Speed display
+// - Minimap
+// - Weapon indicator
+// - Mobile touch controls
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_RaceHUD"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Position Display (Top Left)
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.TextBlock Name="PositionText"
+               Text="1st"
+               Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=48)
+               ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+               ShadowColorAndOpacity=(R=0,G=0,B=0,A=0.8)
+               ShadowOffset=(X=2,Y=2)
+            End Object
+            Anchors=(Minimum=(X=0.05,Y=0.05),Maximum=(X=0.05,Y=0.05))
+            Offsets=(Left=0,Top=0,Right=100,Bottom=60)
+         End Object
+         
+         // Lap Counter (Top Right)
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.TextBlock Name="LapText"
+               Text="LAP 1/3"
+               Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=32)
+               ColorAndOpacity=(R=1,G=1,B=1,A=1)
+               ShadowColorAndOpacity=(R=0,G=0,B=0,A=0.8)
+               ShadowOffset=(X=2,Y=2)
+               Justification=Right
+            End Object
+            Anchors=(Minimum=(X=0.95,Y=0.05),Maximum=(X=0.95,Y=0.05))
+            Offsets=(Left=-150,Top=0,Right=0,Bottom=40)
+         End Object
+         
+         // Speed Display (Bottom Left)
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.HorizontalBox Name="SpeedDisplay"
+               
+               Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.TextBlock Name="SpeedValue"
+                     Text="120"
+                     Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=36)
+                     ColorAndOpacity=(R=0,G=1,B=1,A=1)
+                  End Object
+                  Size=(SizeRule=Auto)
+               End Object
+               
+               Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.TextBlock Name="SpeedUnit"
+                     Text=" KM/H"
+                     Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=24)
+                     ColorAndOpacity=(R=0.8,G=0.8,B=0.8,A=1)
+                  End Object
+                  Size=(SizeRule=Auto)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.05,Y=0.9),Maximum=(X=0.05,Y=0.9))
+            Offsets=(Left=0,Top=-40,Right=200,Bottom=0)
+         End Object
+         
+         // Minimap (Bottom Right)
+         Slot[3]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="MinimapBorder"
+               BrushColor=(R=0,G=0,B=0,A=0.5)
+               Content=Begin Object Class=/Script/UMG.Image Name="MinimapImage"
+                  Brush=(ImageSize=(X=200,Y=200),Texture=/Game/UI/Textures/T_Minimap_Default.T_Minimap_Default)
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.95,Y=0.95),Maximum=(X=0.95,Y=0.95))
+            Offsets=(Left=-220,Top=-220,Right=0,Bottom=0)
+         End Object
+         
+         // Weapon Display (Center Bottom)
+         Slot[4]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="WeaponIcon"
+               Brush=(ImageSize=(X=64,Y=64),Texture=/Game/UI/Textures/T_Weapon_None.T_Weapon_None)
+               Visibility=Hidden
+            End Object
+            Anchors=(Minimum=(X=0.5,Y=0.9),Maximum=(X=0.5,Y=0.9))
+            Offsets=(Left=-32,Top=-32,Right=32,Bottom=32)
+         End Object
+         
+         // Mobile Touch Controls (Conditional)
+         Slot[5]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.HorizontalBox Name="MobileControls"
+               Visibility=Hidden
+               
+               // Accelerate Button
+               Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="AccelerateButton"
+                     Style=(Normal=(Tint=(R=0,G=1,B=0,A=0.7)),Pressed=(Tint=(R=0,G=1,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="AccelerateText"
+                        Text="GAS"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=10)
+               End Object
+               
+               // Brake Button
+               Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="BrakeButton"
+                     Style=(Normal=(Tint=(R=1,G=0,B=0,A=0.7)),Pressed=(Tint=(R=1,G=0,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="BrakeText"
+                        Text="BRAKE"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=10)
+               End Object
+               
+               // Weapon Button
+               Slot[2]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="WeaponButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=0.7)),Pressed=(Tint=(R=1,G=0.5,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="WeaponText"
+                        Text="FIRE"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=10)
+               End Object
+               
+               // Drift Button
+               Slot[3]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="DriftButton"
+                     Style=(Normal=(Tint=(R=1,G=1,B=0,A=0.7)),Pressed=(Tint=(R=1,G=1,B=0,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="DriftText"
+                        Text="DRIFT"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.1,Y=0.8),Maximum=(X=0.9,Y=0.95))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

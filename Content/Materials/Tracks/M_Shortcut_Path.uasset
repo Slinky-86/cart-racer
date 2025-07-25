@@ -1,0 +1,40 @@
+// Material: M_Shortcut_Path
+// 
+// Special material for shortcut paths with glowing effects
+// Features:
+// - Emissive glow for visibility
+// - Animated flowing effects
+// - Difficulty-based color variations
+// - Mobile-optimized shaders
+
+Begin Object Class=/Script/Engine.Material Name="M_Shortcut_Path"
+   // Base Color with glow
+   BaseColor=VectorParameter(ParameterName="PathColor",DefaultValue=(R=0.2,G=0.8,B=1.0,A=1.0))
+   
+   // Emissive for glow effect
+   EmissiveColor=Multiply(BaseColor,ScalarParameter(ParameterName="GlowIntensity",DefaultValue=2.0))
+   
+   // Animated flow effect
+   EmissiveColor=Add(EmissiveColor,Multiply(
+      Texture2DSample(Texture=/Game/Textures/Effects/T_Flow_Pattern.T_Flow_Pattern,
+         UVs=Add(TexCoord[0],Multiply(Time,ScalarParameter(ParameterName="FlowSpeed",DefaultValue=0.5)))),
+      ScalarParameter(ParameterName="FlowIntensity",DefaultValue=0.3)
+   ))
+   
+   // Opacity for fade effects
+   Opacity=ScalarParameter(ParameterName="PathOpacity",DefaultValue=0.8)
+   
+   // Material Parameters
+   ScalarParameterValues[0]=(ParameterName="GlowIntensity",ParameterValue=2.0)
+   ScalarParameterValues[1]=(ParameterName="FlowSpeed",ParameterValue=0.5)
+   ScalarParameterValues[2]=(ParameterName="FlowIntensity",ParameterValue=0.3)
+   ScalarParameterValues[3]=(ParameterName="PathOpacity",ParameterValue=0.8)
+   
+   VectorParameterValues[0]=(ParameterName="PathColor",ParameterValue=(R=0.2,G=0.8,B=1.0,A=1.0))
+   
+   // Mobile optimizations
+   BlendMode=BLEND_Translucent
+   ShadingModel=MSM_Unlit
+   bUsedWithStaticLighting=false
+   
+End Object

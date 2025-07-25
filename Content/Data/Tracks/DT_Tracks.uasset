@@ -1,0 +1,117 @@
+// Data Table: DT_Tracks
+// Row Structure: FTrackData
+// 
+// Contains all track data including layouts, environments, and unlock requirements
+
+Begin Object Class=/Script/Engine.DataTable Name="DT_Tracks"
+   RowStruct=/Script/WastelandRacers.FTrackData
+   
+   // Pandora Desert Tracks
+   RowData["PandoraDesert"]=(
+      TrackName="Pandora Scrapyard Circuit",
+      TrackType=PandoraDesert,
+      Difficulty=Easy,
+      TrackDescription="Race through the harsh desert wastelands filled with bandit camps and scrap metal",
+      TrackLevel=/Game/Maps/Tracks/L_PandoraDesert.L_PandoraDesert,
+      TrackPreview=/Game/UI/Textures/Tracks/T_PandoraDesert_Preview.T_PandoraDesert_Preview,
+      TrackMinimap=/Game/UI/Textures/Tracks/T_PandoraDesert_Minimap.T_PandoraDesert_Minimap,
+      LapCount=3,
+      TrackLength=2500.0,
+      StartingPositions=((X=0,Y=-200,Z=100),(X=0,Y=-100,Z=100),(X=0,Y=0,Z=100),(X=0,Y=100,Z=100),(X=0,Y=200,Z=100),(X=-100,Y=-150,Z=100),(X=-100,Y=-50,Z=100),(X=-100,Y=50,Z=100)),
+      CheckpointPositions=((X=1000,Y=0,Z=100),(X=1500,Y=800,Z=100),(X=500,Y=1200,Z=100),(X=-500,Y=800,Z=100),(X=-1000,Y=0,Z=100),(X=-500,Y=-800,Z=100),(X=500,Y=-1200,Z=100),(X=1500,Y=-800,Z=100)),
+      PowerUpSpawnPoints=((X=750,Y=400,Z=100),(X=1000,Y=1000,Z=100),(X=0,Y=1000,Z=100),(X=-750,Y=400,Z=100),(X=-750,Y=-400,Z=100),(X=0,Y=-1000,Z=100),(X=1000,Y=-1000,Z=100),(X=750,Y=-400,Z=100)),
+      HazardLocations=((X=1200,Y=600,Z=100),(X=300,Y=1100,Z=100),(X=-800,Y=600,Z=100),(X=-300,Y=-1100,Z=100),(X=1200,Y=-600,Z=100)),
+      TrackMusic=/Game/Audio/Music/MUS_PandoraDesert.MUS_PandoraDesert,
+      AmbientSound=/Game/Audio/Ambient/AMB_Desert_Wind.AMB_Desert_Wind,
+      bIsUnlocked=true
+   )
+   
+   // Opportunity City Tracks
+   RowData["OpportunityRuins"]=(
+      TrackName="Opportunity Ruins Grand Prix",
+      TrackType=OpportunityRuins,
+      Difficulty=Medium,
+      TrackDescription="Navigate through the crumbling corporate city with dangerous construction zones",
+      TrackLevel=/Game/Maps/Tracks/L_OpportunityRuins.L_OpportunityRuins,
+      TrackPreview=/Game/UI/Textures/Tracks/T_OpportunityRuins_Preview.T_OpportunityRuins_Preview,
+      TrackMinimap=/Game/UI/Textures/Tracks/T_OpportunityRuins_Minimap.T_OpportunityRuins_Minimap,
+      LapCount=3,
+      TrackLength=3000.0,
+      StartingPositions=((X=0,Y=-200,Z=200),(X=0,Y=-100,Z=200),(X=0,Y=0,Z=200),(X=0,Y=100,Z=200),(X=0,Y=200,Z=200),(X=-100,Y=-150,Z=200),(X=-100,Y=-50,Z=200),(X=-100,Y=50,Z=200)),
+      CheckpointPositions=((X=800,Y=0,Z=200),(X=1200,Y=600,Z=300),(X=600,Y=1000,Z=250),(X=-400,Y=800,Z=200),(X=-800,Y=200,Z=150),(X=-600,Y=-600,Z=200),(X=400,Y=-1000,Z=300),(X=1000,Y=-400,Z=250)),
+      PowerUpSpawnPoints=((X=600,Y=300,Z=200),(X=800,Y=800,Z=250),(X=0,Y=900,Z=225),(X=-600,Y=500,Z=175),(X=-600,Y=-300,Z=200),(X=0,Y=-800,Z=250),(X=800,Y=-800,Z=275),(X=600,Y=-200,Z=225)),
+      HazardLocations=((X=1000,Y=400,Z=200),(X=200,Y=900,Z=225),(X=-600,Y=600,Z=175),(X=-200,Y=-900,Z=225),(X=1000,Y=-400,Z=250)),
+      TrackMusic=/Game/Audio/Music/MUS_OpportunityRuins.MUS_OpportunityRuins,
+      AmbientSound=/Game/Audio/Ambient/AMB_Urban_Decay.AMB_Urban_Decay,
+      bIsUnlocked=false,
+      UnlockRequirement=2,
+      UnlockDescription="Win 2 races on Pandora"
+   )
+   
+   // Eridium Mines Tracks
+   RowData["EridiumMines"]=(
+      TrackName="Eridium Crystal Caverns",
+      TrackType=EridiumMines,
+      Difficulty=Hard,
+      TrackDescription="Race through dark underground tunnels lit by glowing Eridium deposits",
+      TrackLevel=/Game/Maps/Tracks/L_EridiumMines.L_EridiumMines,
+      TrackPreview=/Game/UI/Textures/Tracks/T_EridiumMines_Preview.T_EridiumMines_Preview,
+      TrackMinimap=/Game/UI/Textures/Tracks/T_EridiumMines_Minimap.T_EridiumMines_Minimap,
+      LapCount=4,
+      TrackLength=2200.0,
+      StartingPositions=((X=0,Y=-150,Z=50),(X=0,Y=-75,Z=50),(X=0,Y=0,Z=50),(X=0,Y=75,Z=50),(X=0,Y=150,Z=50),(X=-75,Y=-112,Z=50),(X=-75,Y=-37,Z=50),(X=-75,Y=37,Z=50)),
+      CheckpointPositions=((X=600,Y=0,Z=50),(X=800,Y=400,Z=25),(X=200,Y=600,Z=0),(X=-400,Y=400,Z=25),(X=-600,Y=0,Z=50),(X=-400,Y=-400,Z=75),(X=200,Y=-600,Z=100),(X=800,Y=-400,Z=75)),
+      PowerUpSpawnPoints=((X=400,Y=200,Z=50),(X=500,Y=500,Z=25),(X=0,Y=500,Z=12),(X=-400,Y=300,Z=37),(X=-400,Y=-200,Z=75),(X=0,Y=-500,Z=87),(X=500,Y=-500,Z=87),(X=400,Y=-100,Z=62)),
+      HazardLocations=((X=700,Y=200,Z=50),(X=100,Y=550,Z=12),(X=-500,Y=300,Z=37),(X=-100,Y=-550,Z=87),(X=700,Y=-200,Z=75)),
+      TrackMusic=/Game/Audio/Music/MUS_EridiumMines.MUS_EridiumMines,
+      AmbientSound=/Game/Audio/Ambient/AMB_Cave_Echoes.AMB_Cave_Echoes,
+      bIsUnlocked=false,
+      UnlockRequirement=5,
+      UnlockDescription="Complete Opportunity Cup"
+   )
+   
+   // Wildlife Preserve Tracks
+   RowData["WildlifePreserve"]=(
+      TrackName="Creature Feature Speedway",
+      TrackType=WildlifePreserve,
+      Difficulty=Medium,
+      TrackDescription="Navigate through overgrown research facilities with dangerous wildlife",
+      TrackLevel=/Game/Maps/Tracks/L_WildlifePreserve.L_WildlifePreserve,
+      TrackPreview=/Game/UI/Textures/Tracks/T_WildlifePreserve_Preview.T_WildlifePreserve_Preview,
+      TrackMinimap=/Game/UI/Textures/Tracks/T_WildlifePreserve_Minimap.T_WildlifePreserve_Minimap,
+      LapCount=3,
+      TrackLength=2800.0,
+      StartingPositions=((X=0,Y=-200,Z=120),(X=0,Y=-100,Z=120),(X=0,Y=0,Z=120),(X=0,Y=100,Z=120),(X=0,Y=200,Z=120),(X=-100,Y=-150,Z=120),(X=-100,Y=-50,Z=120),(X=-100,Y=50,Z=120)),
+      CheckpointPositions=((X=900,Y=0,Z=120),(X=1300,Y=700,Z=140),(X=400,Y=1100,Z=160),(X=-600,Y=700,Z=140),(X=-900,Y=0,Z=120),(X=-600,Y=-700,Z=100),(X=400,Y=-1100,Z=80),(X=1300,Y=-700,Z=100)),
+      PowerUpSpawnPoints=((X=650,Y=350,Z=130),(X=850,Y=850,Z=150),(X=0,Y=950,Z=150),(X=-650,Y=350,Z=135),(X=-650,Y=-350,Z=110),(X=0,Y=-950,Z=90),(X=850,Y=-850,Z=90),(X=650,Y=-350,Z=110)),
+      HazardLocations=((X=1100,Y=500,Z=130),(X=200,Y=1000,Z=155),(X=-700,Y=500,Z=137),(X=-200,Y=-1000,Z=85),(X=1100,Y=-500,Z=95)),
+      TrackMusic=/Game/Audio/Music/MUS_WildlifePreserve.MUS_WildlifePreserve,
+      AmbientSound=/Game/Audio/Ambient/AMB_Forest_Creatures.AMB_Forest_Creatures,
+      bIsUnlocked=false,
+      UnlockRequirement=8,
+      UnlockDescription="Win Eridium Cup"
+   )
+   
+   // Hyperion Moon Base Tracks
+   RowData["HyperionMoonBase"]=(
+      TrackName="Elpis Low-Gravity Circuit",
+      TrackType=HyperionMoonBase,
+      Difficulty=Expert,
+      TrackDescription="Experience low-gravity racing on Hyperion's lunar facility",
+      TrackLevel=/Game/Maps/Tracks/L_HyperionMoonBase.L_HyperionMoonBase,
+      TrackPreview=/Game/UI/Textures/Tracks/T_HyperionMoonBase_Preview.T_HyperionMoonBase_Preview,
+      TrackMinimap=/Game/UI/Textures/Tracks/T_HyperionMoonBase_Minimap.T_HyperionMoonBase_Minimap,
+      LapCount=3,
+      TrackLength=3500.0,
+      StartingPositions=((X=0,Y=-250,Z=300),(X=0,Y=-125,Z=300),(X=0,Y=0,Z=300),(X=0,Y=125,Z=300),(X=0,Y=250,Z=300),(X=-125,Y=-187,Z=300),(X=-125,Y=-62,Z=300),(X=-125,Y=62,Z=300)),
+      CheckpointPositions=((X=1200,Y=0,Z=300),(X=1600,Y=900,Z=400),(X=600,Y=1400,Z=500),(X=-800,Y=900,Z=400),(X=-1200,Y=0,Z=300),(X=-800,Y=-900,Z=200),(X=600,Y=-1400,Z=100),(X=1600,Y=-900,Z=200)),
+      PowerUpSpawnPoints=((X=900,Y=450,Z=350),(X=1100,Y=1100,Z=450),(X=0,Y=1200,Z=475),(X=-900,Y=450,Z=375),(X=-900,Y=-450,Z=225),(X=0,Y=-1200,Z=125),(X=1100,Y=-1100,Z=150),(X=900,Y=-450,Z=225)),
+      HazardLocations=((X=1400,Y=650,Z=375),(X=300,Y=1300,Z=487),(X=-1000,Y=650,Z=387),(X=-300,Y=-1300,Z=112),(X=1400,Y=-650,Z=175)),
+      TrackMusic=/Game/Audio/Music/MUS_HyperionMoonBase.MUS_HyperionMoonBase,
+      AmbientSound=/Game/Audio/Ambient/AMB_Space_Station.AMB_Space_Station,
+      bIsUnlocked=false,
+      UnlockRequirement=15,
+      UnlockDescription="Complete all other cups"
+   )
+   
+End Object

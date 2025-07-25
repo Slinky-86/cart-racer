@@ -1,0 +1,271 @@
+// Widget Blueprint: WBP_KartSelection
+// 
+// Complete kart selection interface
+// Features:
+// - Kart grid with 3D previews
+// - Performance stats display
+// - Customization options
+// - Unlock status indicators
+// - Overall rating system
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_KartSelection"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Background
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="BackgroundImage"
+               Brush=(ImageSize=(X=1920,Y=1080),Texture=/Game/UI/Textures/T_KartSelection_Background.T_KartSelection_Background)
+            End Object
+            Anchors=(Minimum=(X=0,Y=0),Maximum=(X=1,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Kart Grid Panel
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="KartGridPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.UniformGridPanel Name="KartGrid"
+                  
+                  // Kart slots will be populated dynamically
+                  // 8 karts in 2 rows of 4
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.05,Y=0.1),Maximum=(X=0.6,Y=0.7))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Kart Preview Panel
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="PreviewPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.VerticalBox Name="PreviewBox"
+                  
+                  // Kart 3D Preview (would be implemented with UMG 3D widget)
+                  Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.Image Name="KartPreviewImage"
+                        Brush=(ImageSize=(X=400,Y=300),Texture=/Game/UI/Textures/Karts/T_BanditTechnical_Preview.T_BanditTechnical_Preview)
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Kart Information
+                  Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="KartInfoBox"
+                        
+                        // Kart Name
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="KartNameText"
+                              Text="BANDIT TECHNICAL"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                              Justification=Center
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Kart Description
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="KartDescriptionText"
+                              Text="Rugged wasteland vehicle with balanced performance"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=0.9,G=0.9,B=0.9,A=1)
+                              Justification=Center
+                              AutoWrapText=true
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=15)
+                        End Object
+                        
+                        // Overall Rating
+                        Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="RatingBox"
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="RatingLabel"
+                                    Text="OVERALL RATING:"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=16)
+                                    ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="OverallRatingText"
+                                    Text="75/100"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=20)
+                                    ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=15)
+                        End Object
+                        
+                        // Performance Stats
+                        Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.VerticalBox Name="StatsBox"
+                              
+                              // Speed Stat
+                              Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="SpeedStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="SpeedLabel"
+                                          Text="Speed:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="SpeedStatBar"
+                                          Percent=0.8
+                                          FillColorAndOpacity=(R=0,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Acceleration Stat
+                              Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="AccelerationStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="AccelerationLabel"
+                                          Text="Acceleration:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="AccelerationStatBar"
+                                          Percent=0.8
+                                          FillColorAndOpacity=(R=0,G=1,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Handling Stat
+                              Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="HandlingStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="HandlingLabel"
+                                          Text="Handling:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="HandlingStatBar"
+                                          Percent=1.0
+                                          FillColorAndOpacity=(R=1,G=1,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=5)
+                              End Object
+                              
+                              // Weight Stat
+                              Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="WeightStatBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="WeightLabel"
+                                          Text="Weight:"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                                          ColorAndOpacity=(R=1,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.3)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.ProgressBar Name="WeightStatBar"
+                                          Percent=0.75
+                                          FillColorAndOpacity=(R=1,G=0.5,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=0.7)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=20)
+                              End Object
+                              
+                           End Object
+                           Size=(SizeRule=Auto)
+                        End Object
+                        
+                     End Object
+                     Size=(SizeRule=Fill,Value=1)
+                  End Object
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.65,Y=0.1),Maximum=(X=0.95,Y=0.7))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Bottom Button Panel
+         Slot[3]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.HorizontalBox Name="BottomButtonPanel"
+               
+               // Back Button
+               Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="BackButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="BackText"
+                        Text="BACK"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=10)
+               End Object
+               
+               // Customize Button
+               Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="CustomizeButton"
+                     Style=(Normal=(Tint=(R=1,G=1,B=0,A=1)),Hovered=(Tint=(R=1,G=1,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="CustomizeText"
+                        Text="CUSTOMIZE"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Left=10,Right=10)
+               End Object
+               
+               // Confirm Button
+               Slot[2]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="ConfirmButton"
+                     Style=(Normal=(Tint=(R=0,G=1,B=0,A=1)),Hovered=(Tint=(R=0.2,G=1,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="ConfirmText"
+                        Text="SELECT KART"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Left=10)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.2,Y=0.85),Maximum=(X=0.8,Y=0.95))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

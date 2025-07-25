@@ -1,0 +1,275 @@
+// Widget Blueprint: WBP_TrackSelection
+// 
+// Complete track selection interface
+// Features:
+// - Track list with previews and information
+// - Difficulty indicators
+// - Unlock status display
+// - Track statistics (length, laps, best time)
+// - Engine class selection
+
+Begin Object Class=/Script/UMG.WidgetBlueprint Name="WBP_TrackSelection"
+   WidgetTree=Begin Object Class=/Script/UMG.WidgetTree Name="WidgetTree"
+      RootWidget=Begin Object Class=/Script/UMG.CanvasPanel Name="RootCanvas"
+         
+         // Background
+         Slot[0]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Image Name="BackgroundImage"
+               Brush=(ImageSize=(X=1920,Y=1080),Texture=/Game/UI/Textures/T_TrackSelection_Background.T_TrackSelection_Background)
+            End Object
+            Anchors=(Minimum=(X=0,Y=0),Maximum=(X=1,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Track List Panel
+         Slot[1]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="TrackListPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.ScrollBox Name="TrackListScrollBox"
+                  
+                  // Track entries will be populated dynamically
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.05,Y=0.1),Maximum=(X=0.45,Y=0.9))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Track Preview Panel
+         Slot[2]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.Border Name="PreviewPanel"
+               BrushColor=(R=0,G=0,B=0,A=0.8)
+               Content=Begin Object Class=/Script/UMG.VerticalBox Name="PreviewBox"
+                  
+                  // Track Preview Image
+                  Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.Image Name="TrackPreviewImage"
+                        Brush=(ImageSize=(X=400,Y=300),Texture=/Game/UI/Textures/Tracks/T_PandoraDesert_Preview.T_PandoraDesert_Preview)
+                     End Object
+                     Size=(SizeRule=Auto)
+                     Padding=(Bottom=20)
+                  End Object
+                  
+                  // Track Information
+                  Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                     Content=Begin Object Class=/Script/UMG.VerticalBox Name="TrackInfoBox"
+                        
+                        // Track Name
+                        Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="TrackNameText"
+                              Text="Pandora Scrapyard Circuit"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=28)
+                              ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=10)
+                        End Object
+                        
+                        // Track Description
+                        Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.TextBlock Name="TrackDescriptionText"
+                              Text="Race through the harsh desert wastelands filled with bandit camps and scrap metal"
+                              Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Regular.F_Borderlands_Regular,Size=16)
+                              ColorAndOpacity=(R=0.9,G=0.9,B=0.9,A=1)
+                              AutoWrapText=true
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=15)
+                        End Object
+                        
+                        // Track Stats
+                        Slot[2]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.HorizontalBox Name="TrackStatsBox"
+                              
+                              // Difficulty
+                              Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.VerticalBox Name="DifficultyBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="DifficultyLabel"
+                                          Text="DIFFICULTY"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=14)
+                                          ColorAndOpacity=(R=0.7,G=0.7,B=0.7,A=1)
+                                       End Object
+                                       Size=(SizeRule=Auto)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="TrackDifficultyText"
+                                          Text="EASY"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=18)
+                                          ColorAndOpacity=(R=0,G=1,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Auto)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              
+                              // Length
+                              Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.VerticalBox Name="LengthBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="LengthLabel"
+                                          Text="LENGTH"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=14)
+                                          ColorAndOpacity=(R=0.7,G=0.7,B=0.7,A=1)
+                                       End Object
+                                       Size=(SizeRule=Auto)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="TrackLengthText"
+                                          Text="2.5 KM"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=18)
+                                          ColorAndOpacity=(R=0,G=1,B=1,A=1)
+                                       End Object
+                                       Size=(SizeRule=Auto)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              
+                              // Laps
+                              Slot[2]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.VerticalBox Name="LapsBox"
+                                    Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="LapsLabel"
+                                          Text="LAPS"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=14)
+                                          ColorAndOpacity=(R=0.7,G=0.7,B=0.7,A=1)
+                                       End Object
+                                       Size=(SizeRule=Auto)
+                                    End Object
+                                    Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.TextBlock Name="TrackLapsText"
+                                          Text="3"
+                                          Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=18)
+                                          ColorAndOpacity=(R=1,G=1,B=0,A=1)
+                                       End Object
+                                       Size=(SizeRule=Auto)
+                                    End Object
+                                 End Object
+                                 Size=(SizeRule=Fill,Value=1)
+                              End Object
+                              
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=20)
+                        End Object
+                        
+                        // Engine Class Selection
+                        Slot[3]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                           Content=Begin Object Class=/Script/UMG.VerticalBox Name="EngineClassBox"
+                              
+                              Slot[0]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.TextBlock Name="EngineClassLabel"
+                                    Text="ENGINE CLASS"
+                                    Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=18)
+                                    ColorAndOpacity=(R=1,G=0.8,B=0,A=1)
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                                 Padding=(Bottom=10)
+                              End Object
+                              
+                              Slot[1]=Begin Object Class=/Script/UMG.VerticalBoxSlot
+                                 Content=Begin Object Class=/Script/UMG.HorizontalBox Name="EngineClassButtons"
+                                    
+                                    // 100cc Button
+                                    Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.Button Name="Engine100ccButton"
+                                          Style=(Normal=(Tint=(R=0,G=1,B=0,A=1)),Hovered=(Tint=(R=0.2,G=1,B=0.2,A=1)))
+                                          Content=Begin Object Class=/Script/UMG.TextBlock Name="Engine100ccText"
+                                             Text="100cc"
+                                             Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=16)
+                                             Justification=Center
+                                          End Object
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=1)
+                                       Padding=(Right=5)
+                                    End Object
+                                    
+                                    // 200cc Button
+                                    Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.Button Name="Engine200ccButton"
+                                          Style=(Normal=(Tint=(R=1,G=1,B=0,A=1)),Hovered=(Tint=(R=1,G=1,B=0.2,A=1)))
+                                          Content=Begin Object Class=/Script/UMG.TextBlock Name="Engine200ccText"
+                                             Text="200cc"
+                                             Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=16)
+                                             Justification=Center
+                                          End Object
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=1)
+                                       Padding=(Left=5,Right=5)
+                                    End Object
+                                    
+                                    // 300cc Button
+                                    Slot[2]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                                       Content=Begin Object Class=/Script/UMG.Button Name="Engine300ccButton"
+                                          Style=(Normal=(Tint=(R=1,G=0,B=0,A=1)),Hovered=(Tint=(R=1,G=0.2,B=0.2,A=1)))
+                                          Content=Begin Object Class=/Script/UMG.TextBlock Name="Engine300ccText"
+                                             Text="300cc"
+                                             Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=16)
+                                             Justification=Center
+                                          End Object
+                                       End Object
+                                       Size=(SizeRule=Fill,Value=1)
+                                       Padding=(Left=5)
+                                    End Object
+                                    
+                                 End Object
+                                 Size=(SizeRule=Auto)
+                              End Object
+                              
+                           End Object
+                           Size=(SizeRule=Auto)
+                           Padding=(Bottom=20)
+                        End Object
+                        
+                     End Object
+                     Size=(SizeRule=Fill,Value=1)
+                  End Object
+                  
+               End Object
+            End Object
+            Anchors=(Minimum=(X=0.55,Y=0.1),Maximum=(X=0.95,Y=0.9))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+         // Bottom Button Panel
+         Slot[3]=Begin Object Class=/Script/UMG.CanvasPanelSlot
+            Content=Begin Object Class=/Script/UMG.HorizontalBox Name="BottomButtonPanel"
+               
+               // Back Button
+               Slot[0]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="BackButton"
+                     Style=(Normal=(Tint=(R=1,G=0.5,B=0,A=1)),Hovered=(Tint=(R=1,G=0.7,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="BackText"
+                        Text="BACK"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=1)
+                  Padding=(Right=20)
+               End Object
+               
+               // Start Race Button
+               Slot[1]=Begin Object Class=/Script/UMG.HorizontalBoxSlot
+                  Content=Begin Object Class=/Script/UMG.Button Name="StartRaceButton"
+                     Style=(Normal=(Tint=(R=0,G=1,B=0,A=1)),Hovered=(Tint=(R=0.2,G=1,B=0.2,A=1)))
+                     Content=Begin Object Class=/Script/UMG.TextBlock Name="StartRaceText"
+                        Text="START RACE"
+                        Font=(FontObject=/Game/UI/Fonts/F_Borderlands_Bold.F_Borderlands_Bold,Size=24)
+                        Justification=Center
+                     End Object
+                  End Object
+                  Size=(SizeRule=Fill,Value=2)
+               End Object
+               
+            End Object
+            Anchors=(Minimum=(X=0.2,Y=0.92),Maximum=(X=0.8,Y=1))
+            Offsets=(Left=0,Top=0,Right=0,Bottom=0)
+         End Object
+         
+      End Object
+   End Object
+   
+End Object

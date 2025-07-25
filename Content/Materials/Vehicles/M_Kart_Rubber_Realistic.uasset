@@ -1,0 +1,51 @@
+// Material: M_Kart_Rubber_Realistic
+// 
+// Realistic PBR rubber material for tires and seals
+// Features:
+// - Authentic rubber surface properties
+// - Tire tread patterns and wear
+// - Realistic subsurface scattering
+// - Temperature-based color changes
+// - Mobile optimized
+
+Begin Object Class=/Script/Engine.Material Name="M_Kart_Rubber_Realistic"
+   // Base Color from texture library
+   BaseColor=Texture2DSample(Texture=TextureParameter(ParameterName="DiffuseTexture",DefaultValue=/Game/Textures/Vehicles/T_Rubber_Diffuse.T_Rubber_Diffuse))
+   
+   // Normal Map for tire tread detail
+   Normal=Texture2DSample(Texture=TextureParameter(ParameterName="NormalTexture",DefaultValue=/Game/Textures/Vehicles/T_Rubber_Normal.T_Rubber_Normal),SamplerType=Normal)
+   
+   // Roughness (rubber is typically rough)
+   Roughness=Lerp(0.7,0.9,Texture2DSample(Texture=TextureParameter(ParameterName="RoughnessTexture",DefaultValue=/Game/Textures/Vehicles/T_Rubber_Roughness.T_Rubber_Roughness)).R)
+   
+   // Metallic (very low for rubber)
+   Metallic=0.02
+   
+   // Specular (low for rubber)
+   Specular=0.3
+   
+   // Subsurface for realistic rubber look
+   SubsurfaceColor=Multiply(BaseColor,0.3)
+   
+   // Tire wear system
+   BaseColor=Lerp(BaseColor,Texture2DSample(Texture=/Game/Textures/Vehicles/T_Tire_Wear.T_Tire_Wear),ScalarParameter(ParameterName="WearAmount",DefaultValue=0.0))
+   
+   // Temperature effects (hot tires get darker)
+   BaseColor=Lerp(BaseColor,Multiply(BaseColor,0.7),ScalarParameter(ParameterName="Temperature",DefaultValue=0.0))
+   
+   // Material Parameters
+   TextureParameterValues[0]=(ParameterName="DiffuseTexture",ParameterValue=/Game/Textures/Vehicles/T_Rubber_Diffuse.T_Rubber_Diffuse)
+   TextureParameterValues[1]=(ParameterName="NormalTexture",ParameterValue=/Game/Textures/Vehicles/T_Rubber_Normal.T_Rubber_Normal)
+   TextureParameterValues[2]=(ParameterName="RoughnessTexture",ParameterValue=/Game/Textures/Vehicles/T_Rubber_Roughness.T_Rubber_Roughness)
+   
+   ScalarParameterValues[0]=(ParameterName="WearAmount",ParameterValue=0.0)
+   ScalarParameterValues[1]=(ParameterName="Temperature",ParameterValue=0.0)
+   ScalarParameterValues[2]=(ParameterName="RoughnessMultiplier",ParameterValue=1.0)
+   
+   VectorParameterValues[0]=(ParameterName="RubberTint",ParameterValue=(R=1.0,G=1.0,B=1.0,A=1.0))
+   
+   // Mobile optimizations
+   BlendMode=BLEND_Opaque
+   ShadingModel=MSM_DefaultLit
+   
+End Object

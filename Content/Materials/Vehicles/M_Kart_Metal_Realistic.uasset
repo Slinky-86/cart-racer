@@ -1,0 +1,55 @@
+// Material: M_Kart_Metal_Realistic
+// 
+// Realistic PBR metal material for kart chassis and components
+// Features:
+// - Automotive-grade metal finish
+// - Realistic reflections and specularity
+// - Damage and wear effects
+// - Customizable metal types (steel, aluminum, chrome)
+// - Mobile optimized with quality switches
+
+Begin Object Class=/Script/Engine.Material Name="M_Kart_Metal_Realistic"
+   // Base Color from texture library
+   BaseColor=Texture2DSample(Texture=TextureParameter(ParameterName="DiffuseTexture",DefaultValue=/Game/Textures/Vehicles/T_Metal_Diffuse.T_Metal_Diffuse))
+   
+   // Normal Map for surface detail
+   Normal=Texture2DSample(Texture=TextureParameter(ParameterName="NormalTexture",DefaultValue=/Game/Textures/Vehicles/T_Metal_Normal.T_Metal_Normal),SamplerType=Normal)
+   
+   // Roughness Map
+   Roughness=Texture2DSample(Texture=TextureParameter(ParameterName="RoughnessTexture",DefaultValue=/Game/Textures/Vehicles/T_Metal_Roughness.T_Metal_Roughness)).R
+   
+   // Metallic (high for metal surfaces)
+   Metallic=Lerp(0.9,1.0,Texture2DSample(Texture=TextureParameter(ParameterName="MetallicTexture",DefaultValue=/Game/Textures/Vehicles/T_Metal_Metallic.T_Metal_Metallic)).R)
+   
+   // Ambient Occlusion
+   AmbientOcclusion=Texture2DSample(Texture=TextureParameter(ParameterName="AOTexture",DefaultValue=/Game/Textures/Vehicles/T_Metal_AO.T_Metal_AO)).R
+   
+   // Specular
+   Specular=0.9
+   
+   // Damage overlay system
+   BaseColor=Lerp(BaseColor,Texture2DSample(Texture=/Game/Textures/Vehicles/T_Damage_Overlay.T_Damage_Overlay),ScalarParameter(ParameterName="DamageAmount",DefaultValue=0.0))
+   
+   // Customizable metal type
+   BaseColor=Multiply(BaseColor,VectorParameter(ParameterName="MetalTint",DefaultValue=(R=1.0,G=1.0,B=1.0,A=1.0)))
+   
+   // Material Parameters for runtime customization
+   TextureParameterValues[0]=(ParameterName="DiffuseTexture",ParameterValue=/Game/Textures/Vehicles/T_Metal_Diffuse.T_Metal_Diffuse)
+   TextureParameterValues[1]=(ParameterName="NormalTexture",ParameterValue=/Game/Textures/Vehicles/T_Metal_Normal.T_Metal_Normal)
+   TextureParameterValues[2]=(ParameterName="RoughnessTexture",ParameterValue=/Game/Textures/Vehicles/T_Metal_Roughness.T_Metal_Roughness)
+   TextureParameterValues[3]=(ParameterName="MetallicTexture",ParameterValue=/Game/Textures/Vehicles/T_Metal_Metallic.T_Metal_Metallic)
+   TextureParameterValues[4]=(ParameterName="AOTexture",ParameterValue=/Game/Textures/Vehicles/T_Metal_AO.T_Metal_AO)
+   
+   ScalarParameterValues[0]=(ParameterName="DamageAmount",ParameterValue=0.0)
+   ScalarParameterValues[1]=(ParameterName="MetallicIntensity",ParameterValue=0.95)
+   ScalarParameterValues[2]=(ParameterName="RoughnessMultiplier",ParameterValue=1.0)
+   
+   VectorParameterValues[0]=(ParameterName="MetalTint",ParameterValue=(R=1.0,G=1.0,B=1.0,A=1.0))
+   
+   // Mobile optimizations
+   BlendMode=BLEND_Opaque
+   ShadingModel=MSM_DefaultLit
+   bUsedWithStaticLighting=true
+   bUsedWithSkeletalMesh=true
+   
+End Object
